@@ -135,6 +135,12 @@
         .add-lesson-button:hover {
             background-color: #45a049;
         }
+        .status-container {
+            margin-top: 10px;
+        }
+        .status-label {
+            margin-right: 10px;
+        }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -169,26 +175,7 @@
     <div class="box" onclick="toggleLessons('lesson10')">درس 10: آزمایشگاه تجزیه <i class="fas fa-book icon"></i></div>
 </div>
 
-<div id="lesson1" class="lesson-list">
-    <div class="editor-toolbar">
-        <button onclick="formatText('bold')"><i class="fas fa-bold"></i></button>
-        <button onclick="formatText('italic')"><i class="fas fa-italic"></i></button>
-        <input type="color" onchange="changeTextColor(this.value)">
-    </div>
-    <h3>فهرست درس خاک شناسی</h3>
-    <textarea class="editable" rows="4">محتوای درس خاک شناسی...</textarea>
-    <button class="save-button" onclick="saveContent('lesson1')">ذخیره</button>
-</div>
-<div id="lesson2" class="lesson-list">
-    <div class="editor-toolbar">
-        <button onclick="formatText('bold')"><i class="fas fa-bold"></i></button>
-        <button onclick="formatText('italic')"><i class="fas fa-italic"></i></button>
-        <input type="color" onchange="changeTextColor(this.value)">
-    </div>
-    <h3>فهرست درس زراعت عمومی</h3>
-    <textarea class="editable" rows="4">محتوای درس زراعت عمومی...</textarea>
-    <button class="save-button" onclick="saveContent('lesson2')">ذخیره</button>
-</div>
+<!-- فهرست درس ریخت شناسی -->
 <div id="lesson3" class="lesson-list">
     <div class="editor-toolbar">
         <button onclick="formatText('bold')"><i class="fas fa-bold"></i></button>
@@ -196,78 +183,62 @@
         <input type="color" onchange="changeTextColor(this.value)">
     </div>
     <h3>فهرست درس ریخت شناسی</h3>
-    <textarea class="editable" rows="4">محتوای درس ریخت شناسی...</textarea>
+    
+    <div class="status-container">
+        <h4>فهرست مطالب:</h4>
+        <ul>
+            <li>
+                <span>فصل اول: نگرشي بر رده‌هاي اصلي گياهان</span>
+                <label class="status-label"><input type="checkbox" name="status1" value="تسلط"> تسلط</label>
+                <label class="status-label"><input type="checkbox" name="status1" value="عدم تسلط"> عدم تسلط</label>
+                <label class="status-label"><input type="checkbox" name="status1" value="تغییر"> تغییر</label>
+            </li>
+            <li>
+                <span>فصل دوم: ياخته گياهي</span>
+                <label class="status-label"><input type="checkbox" name="status2" value="تسلط"> تسلط</label>
+                <label class="status-label"><input type="checkbox" name="status2" value="عدم تسلط"> عدم تسلط</label>
+                <label class="status-label"><input type="checkbox" name="status2" value="تغییر"> تغییر</label>
+            </li>
+            <li>
+                <span>فصل سوم: بافت‌هاي گياهي</span>
+                <label class="status-label"><input type="checkbox" name="status3" value="تسلط"> تسلط</label>
+                <label class="status-label"><input type="checkbox" name="status3" value="عدم تسلط"> عدم تسلط</label>
+                <label class="status-label"><input type="checkbox" name="status3" value="تغییر"> تغییر</label>
+            </li>
+            <li>
+                <span>فصل چهارم: دستگاه رويشي (ریشه)</span>
+                <label class="status-label"><input type="checkbox" name="status4" value="تسلط"> تسلط</label>
+                <label class="status-label"><input type="checkbox" name="status4" value="عدم تسلط"> عدم تسلط</label>
+                <label class="status-label"><input type="checkbox" name="status4" value="تغییر"> تغییر</label>
+            </li>
+            <li>
+                <span>فصل پنجم: دستگاه رويشي (ساقه)</span>
+                <label class="status-label"><input type="checkbox" name="status5" value="تسلط"> تسلط</label>
+                <label class="status-label"><input type="checkbox" name="status5" value="عدم تسلط"> عدم تسلط</label>
+                <label class="status-label"><input type="checkbox" name="status5" value="تغییر"> تغییر</label>
+            </li>
+            <li>
+                <span>فصل ششم: دستگاه رويشي (برگ)</span>
+                <label class="status-label"><input type="checkbox" name="status6" value="تسلط"> تسلط</label>
+                <label class="status-label"><input type="checkbox" name="status6" value="عدم تسلط"> عدم تسلط</label>
+                <label class="status-label"><input type="checkbox" name="status6" value="تغییر"> تغییر</label>
+            </li>
+            <li>
+                <span>فصل هفتم: دستگاه زايشي (گل)</span>
+                <label class="status-label"><input type="checkbox" name="status7" value="تسلط"> تسلط</label>
+                <label class="status-label"><input type="checkbox" name="status7" value="عدم تسلط"> عدم تسلط</label>
+                <label class="status-label"><input type="checkbox" name="status7" value="تغییر"> تغییر</label>
+            </li>
+            <li>
+                <span>فصل هشتم: دستگاه زايشي (میوه و دانه)</span>
+                <label class="status-label"><input type="checkbox" name="status8" value="تسلط"> تسلط</label>
+                <label class="status-label"><input type="checkbox" name="status8" value="عدم تسلط"> عدم تسلط</label>
+                <label class="status-label"><input type="checkbox" name="status8" value="تغییر"> تغییر</label>
+            </li>
+        </ul>
+    </div>
+    
     <button class="save-button" onclick="saveContent('lesson3')">ذخیره</button>
-</div>
-<div id="lesson4" class="lesson-list">
-    <div class="editor-toolbar">
-        <button onclick="formatText('bold')"><i class="fas fa-bold"></i></button>
-        <button onclick="formatText('italic')"><i class="fas fa-italic"></i></button>
-        <input type="color" onchange="changeTextColor(this.value)">
-    </div>
-    <h3>فهرست درس سیستماتیک گیاهی</h3>
-    <textarea class="editable" rows="4">محتوای درس سیستماتیک گیاهی...</textarea>
-    <button class="save-button" onclick="saveContent('lesson4')">ذخیره</button>
-</div>
-<div id="lesson5" class="lesson-list">
-    <div class="editor-toolbar">
-        <button onclick="formatText('bold')"><i class="fas fa-bold"></i></button>
-        <button onclick="formatText('italic')"><i class="fas fa-italic"></i></button>
-        <input type="color" onchange="changeTextColor(this.value)">
-    </div>
-    <h3>فهرست درس برنامه نویسی رایانه</h3>
-    <textarea class="editable" rows="4">محتوای درس برنامه نویسی رایانه...</textarea>
-    <button class="save-button" onclick="saveContent('lesson5')">ذخیره</button>
-</div>
-<div id="lesson6" class="lesson-list">
-    <div class="editor-toolbar">
-        <button onclick="formatText('bold')"><i class="fas fa-bold"></i></button>
-        <button onclick="formatText('italic')"><i class="fas fa-italic"></i></button>
-        <input type="color" onchange="changeTextColor(this.value)">
-    </div>
-    <h3>فهرست درس تفسیر نهج البلاغه</h3>
-    <textarea class="editable" rows="4">محتوای درس تفسیر نهج البلاغه...</textarea>
-    <button class="save-button" onclick="saveContent('lesson6')">ذخیره</button>
-</div>
-<div id="lesson7" class="lesson-list">
-    <div class="editor-toolbar">
-        <button onclick="formatText('bold')"><i class="fas fa-bold"></i></button>
-        <button onclick="formatText('italic')"><i class="fas fa-italic"></i></button>
-        <input type="color" onchange="changeTextColor(this.value)">
-    </div>
-    <h3>فهرست درس شیمی آلی</h3>
-    <textarea class="editable" rows="4">محتوای درس شیمی آلی...</textarea>
-    <button class="save-button" onclick="saveContent('lesson7')">ذخیره</button>
-</div>
-<div id="lesson8" class="lesson-list">
-    <div class="editor-toolbar">
-        <button onclick="formatText('bold')"><i class="fas fa-bold"></i></button>
-        <button onclick="formatText('italic')"><i class="fas fa-italic"></i></button>
-        <input type="color" onchange="changeTextColor(this.value)">
-    </div>
-    <h3>فهرست درس شیمی تجزیه</h3>
-    <textarea class="editable" rows="4">محتوای درس شیمی تجزیه...</textarea>
-    <button class="save-button" onclick="saveContent('lesson8')">ذخیره</button>
-</div>
-<div id="lesson9" class="lesson-list">
-    <div class="editor-toolbar">
-        <button onclick="formatText('bold')"><i class="fas fa-bold"></i></button>
-        <button onclick="formatText('italic')"><i class="fas fa-italic"></i></button>
-        <input type="color" onchange="changeTextColor(this.value)">
-    </div>
-    <h3>فهرست درس آزمایشگاه آلی</h3>
-    <textarea class="editable" rows="4">محتوای درس آزمایشگاه آلی...</textarea>
-    <button class="save-button" onclick="saveContent('lesson9')">ذخیره</button>
-</div>
-<div id="lesson10" class="lesson-list">
-    <div class="editor-toolbar">
-        <button onclick="formatText('bold')"><i class="fas fa-bold"></i></button>
-        <button onclick="formatText('italic')"><i class="fas fa-italic"></i></button>
-        <input type="color" onchange="changeTextColor(this.value)">
-    </div>
-    <h3>فهرست درس آزمایشگاه تجزیه</h3>
-    <textarea class="editable" rows="4">محتوای درس آزمایشگاه تجزیه...</textarea>
-    <button class="save-button" onclick="saveContent('lesson10')">ذخیره</button>
 </div>
 
 <!-- فرم اضافه کردن درس جدید -->
@@ -282,9 +253,13 @@
         const allLessons = document.querySelectorAll('.lesson-list');
         
         allLessons.forEach(lesson => {
-            lesson.style.display = 'none';
+            // بسته شدن همه باکس‌ها
+            if (lesson !== lessonList) {
+                lesson.style.display = 'none';
+            }
         });
 
+        // باز و بسته کردن باکس مورد نظر
         lessonList.style.display = lessonList.style.display === 'none' || lessonList.style.display === '' ? 'block' : 'none';
         lessonList.parentNode.style.zIndex = '999';
         document.querySelectorAll('.box').forEach(b => {
