@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فهرست دروس</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .box {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            width: calc(33% - 40px);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .box:hover {
+            transform: scale(1.05);
+        }
+        .lesson-list {
+            display: none;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .editable {
+            border: 1px solid #007BFF;
+            border-radius: 5px;
+            padding: 5px;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+
+<h1>فهرست دروس</h1>
+<div class="container">
+    <div class="box" onclick="toggleLessons('lesson1')">درس 1: خاک شناسی</div>
+    <div class="box" onclick="toggleLessons('lesson2')">درس 2: زراعت عمومی</div>
+    <div class="box" onclick="toggleLessons('lesson3')">درس 3: ریخت شناسی</div>
+    <div class="box" onclick="toggleLessons('lesson4')">درس 4: سیستماتیک گیاهی</div>
+    <div class="box" onclick="toggleLessons('lesson5')">درس 5: برنامه نویسی رایانه</div>
+    <div class="box" onclick="toggleLessons('lesson6')">درس 6: تفسیر نهج البلاغه</div>
+    <div class="box" onclick="toggleLessons('lesson7')">درس 7: شیمی آلی</div>
+    <div class="box" onclick="toggleLessons('lesson8')">درس 8: شیمی تجزیه</div>
+    <div class="box" onclick="toggleLessons('lesson9')">درس 9: آزمایشگاه آلی</div>
+    <div class="box" onclick="toggleLessons('lesson10')">درس 10: آزمایشگاه تجزیه</div>
+</div>
+
+<div id="lesson1" class="lesson-list">
+    <h3>فهرست درس خاک شناسی</h3>
+    <textarea class="editable" rows="4">محتوای درس خاک شناسی...</textarea>
+</div>
+<div id="lesson2" class="lesson-list">
+    <h3>فهرست درس زراعت عمومی</h3>
+    <textarea class="editable" rows="4">محتوای درس زراعت عمومی...</textarea>
+</div>
+<div id="lesson3" class="lesson-list">
+    <h3>فهرست درس ریخت شناسی</h3>
+    <textarea class="editable" rows="4">محتوای درس ریخت شناسی...</textarea>
+</div>
+<div id="lesson4" class="lesson-list">
+    <h3>فهرست درس سیستماتیک گیاهی</h3>
+    <textarea class="editable" rows="4">محتوای درس سیستماتیک گیاهی...</textarea>
+</div>
+<div id="lesson5" class="lesson-list">
+    <h3>فهرست درس برنامه نویسی رایانه</h3>
+    <textarea class="editable" rows="4">محتوای درس برنامه نویسی رایانه...</textarea>
+</div>
+<div id="lesson6" class="lesson-list">
+    <h3>فهرست درس تفسیر نهج البلاغه</h3>
+    <textarea class="editable" rows="4">محتوای درس تفسیر نهج البلاغه...</textarea>
+</div>
+<div id="lesson7" class="lesson-list">
+    <h3>فهرست درس شیمی آلی</h3>
+    <textarea class="editable" rows="4">محتوای درس شیمی آلی...</textarea>
+</div>
+<div id="lesson8" class="lesson-list">
+    <h3>فهرست درس شیمی تجزیه</h3>
+    <textarea class="editable" rows="4">محتوای درس شیمی تجزیه...</textarea>
+</div>
+<div id="lesson9" class="lesson-list">
+    <h3>فهرست درس آزمایشگاه آلی</h3>
+    <textarea class="editable" rows="4">محتوای درس آزمایشگاه آلی...</textarea>
+</div>
+<div id="lesson10" class="lesson-list">
+    <h3>فهرست درس آزمایشگاه تجزیه</h3>
+    <textarea class="editable" rows="4">محتوای درس آزمایشگاه تجزیه...</textarea>
+</div>
+
+<script>
+    function toggleLessons(lessonId) {
+        const lessonList = document.getElementById(lessonId);
+        const allLessons = document.querySelectorAll('.lesson-list');
+        
+        // Hide all other lesson lists
+        allLessons.forEach(lesson => {
+            if (lesson !== lessonList) {
+                lesson.style.display = 'none';
+            }
+        });
+
+        // Toggle the selected lesson list
+        lessonList.style.display = lessonList.style.display === 'none' || lessonList.style.display === '' ? 'block' : 'none';
+    }
+</script>
+
+</body>
+</html>
