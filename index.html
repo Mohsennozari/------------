@@ -7,25 +7,38 @@
     <title>مدیریت دروس</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazir&display=swap">
     <style>
+        * {
+            font-family: 'Vazir', sans-serif;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Roboto', sans-serif;
             background-color: #f0f9fb;
             color: #333;
-            padding: 20px;
             margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-y: scroll; /* فعال کردن اسکرول */
         }
+
         h1 {
             text-align: center;
             margin-bottom: 20px;
         }
+
         .lesson-list {
             list-style-type: none;
             padding: 0;
             max-width: 800px;
-            margin: 0 auto;
+            width: 100%;
         }
+
         .lesson-item {
             display: flex;
             justify-content: space-between;
@@ -37,10 +50,12 @@
             margin-bottom: 10px;
             transition: transform 0.2s, box-shadow 0.2s;
         }
+
         .lesson-item:hover {
             transform: translateY(-3px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
+
         .edit-field {
             display: none;
             margin-left: 10px;
@@ -50,16 +65,21 @@
             width: 70%;
             transition: border-color 0.3s;
         }
+
         .edit-field:focus {
             border-color: #00796b;
             outline: none;
             box-shadow: 0 0 5px rgba(0, 121, 107, 0.5);
         }
+
         .input-container {
             width: 100%;
+            max-width: 800px;
             display: flex;
+            gap: 10px;
             margin-bottom: 20px;
         }
+
         .input-container input {
             flex: 1;
             padding: 10px;
@@ -67,31 +87,13 @@
             border-radius: 5px;
             transition: border-color 0.3s;
         }
+
         .input-container input:focus {
             border-color: #00796b;
             outline: none;
             box-shadow: 0 0 5px rgba(0, 121, 107, 0.5);
         }
-        .btn {
-            cursor: pointer;
-            padding: 5px 10px;
-            border: none;
-            border-radius: 5px;
-            color: white;
-            transition: background-color 0.3s;
-        }
-        .btn-edit {
-            background-color: #00796b;
-        }
-        .btn-edit:hover {
-            background-color: #005a4d;
-        }
-        .btn-delete {
-            background-color: #dc3545;
-        }
-        .btn-delete:hover {
-            background-color: #c82333;
-        }
+
         #addLessonBtn {
             padding: 10px 15px;
             background-color: #4CAF50;
@@ -100,10 +102,56 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
-            width: 100%;
+            margin-left: 10px;
+            flex-shrink: 0;
+            width: 150px;
         }
+
         #addLessonBtn:hover {
             background-color: #45a049;
+        }
+
+        .btn {
+            cursor: pointer;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            transition: background-color 0.3s;
+        }
+
+        .btn-edit {
+            background-color: #00796b;
+        }
+
+        .btn-edit:hover {
+            background-color: #005a4d;
+        }
+
+        .btn-delete {
+            background-color: #dc3545;
+        }
+
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+
+        /* استایل نوار کناری */
+        ::-webkit-scrollbar {
+            width: 8px; /* عرض نوار کناری */
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f0f9fb; /* رنگ پس‌زمینه نوار کناری */
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #ffcc00, #ff3300); /* رنگ نوار کناری */
+            border-radius: 10px; /* گرد کردن گوشه‌ها */
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, #ff9900, #cc0000); /* رنگ نوار کناری در حالت hover */
         }
 
         /* ریسپانسیو */
@@ -119,11 +167,17 @@
                 margin-top: 5px;
             }
             .edit-field {
-                width: 70%;
+                width: calc(100% - 120px); /* Adjust width for edit field */
             }
             .btn {
                 width: 48%;
                 margin-left: 5px;
+            }
+            .input-container {
+                flex-direction: column; /* Stack input and button vertically */
+            }
+            .input-container input {
+                margin-bottom: 10px; /* Space between input and button */
             }
         }
     </style>
@@ -139,7 +193,7 @@
     </ul>
 
     <script>
-        const lessons = [
+        const lessons = JSON.parse(localStorage.getItem('lessons')) || [
             'خاک شناسی',
             'زراعت عمومی',
             'ریخت شناسی',
@@ -173,12 +227,17 @@
             });
         };
 
+        const saveLessons = () => {
+            localStorage.setItem('lessons', JSON.stringify(lessons));
+        };
+
         const addLesson = () => {
             const title = newLessonInput.value.trim();
             if (title) {
                 lessons.push(title);
                 newLessonInput.value = '';
                 renderLessons();
+                saveLessons(); // Save to local storage
             } else {
                 alert('لطفاً نام درس را وارد کنید.');
             }
@@ -190,6 +249,7 @@
             if (newTitle) {
                 lessons[index] = newTitle;
                 renderLessons();
+                saveLessons(); // Save to local storage
             } else {
                 alert('لطفاً نام درس را وارد کنید.');
             }
@@ -199,6 +259,7 @@
             if (confirm('آیا از حذف این درس مطمئن هستید؟')) {
                 lessons.splice(index, 1);
                 renderLessons();
+                saveLessons(); // Save to local storage
             }
         };
 
@@ -212,6 +273,7 @@
             }
         });
 
+        // بارگذاری دروس از localStorage
         renderLessons();
     </script>
 </body>
