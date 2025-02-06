@@ -1,532 +1,561 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="مدیریت دروس دانشگاهی">
-    <title>مدیریت دروس</title>
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazir&display=swap">
-    <style>
-        * {
-            font-family: 'Vazir', sans-serif;
-            box-sizing: border-box;
-        }
-
-        body {
-            background-color: #f0f9fb;
-            color: #333;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="description" content="مدیریت دروس دانشگاهی">
+      <title>مدیریت دروس</title>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazir&display=swap">
+      <style>
+         * {
+         font-family: 'Vazir', sans-serif;
+         box-sizing: border-box;
+         border-radius: 10px;
+         
+         }
+         body {
+            border-radius: 10px;
+         background-color: #f0f9fb;
+         color: #000000;
+         margin: 0;
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         justify-content: center;
+         min-height: 100vh;
+         padding: 20px;
+         overflow-y: scroll;
+         }
+         span{
+            width: 200px;
+            height: 80px;
+            padding: auto;
+            margin: auto;
             justify-content: center;
-            min-height: 100vh;
-            padding: 20px;
-            overflow-y: scroll;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .lesson-list {
-            list-style-type: none;
-            padding: 0;
-            max-width: 800px;
-            width: 100%;
-        }
-
-        .lesson-item {
-            display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding: 10px;
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .lesson-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .edit-field {
-            display: none;
-            margin-left: 10px;
-            padding: 5px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            width: 70%;
-            transition: border-color 0.3s;
-        }
-
-        .edit-field:focus {
-            border-color: #00796b;
-            outline: none;
-            box-shadow: 0 0 5px rgba(0, 121, 107, 0.5);
-        }
-
-        .input-container {
-            width: 100%;
-            max-width: 800px;
+            text-align: center;
             display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
+            background-color: #ffd900;
+         }
+         h1 {
+         text-align: center;
+         margin-bottom: 20px;
+         color: #00796b; /* رنگ عنوان */
+         }
+         .lesson-list {
+         list-style-type: none;
+         padding: 0;
+         max-width: 800px;
+         width: 100%;
+         }
+         .lesson-item {
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         padding:25px; /* افزایش padding */
+         background: #ffffff;
+         border: 1px solid #ddd;
+         border-radius: 50px; /* گردی بیشتر */
+         margin-bottom: 15px; /* فاصله بیشتر */
+         transition: transform 0.2s, box-shadow 0.3s; /* انیمیشن نرم */
+         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* سایه نرم */
+         }
+         .lesson-item:hover {
+         transform: translateY(-5px);
+         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* سایه بیشتر در hover */
+         }
+         .edit-field {
+         display: none;
+         margin-left: 10px;
+         padding: 8px; /* افزایش padding */
+         border: 1px solid #ddd;
+         border-radius: 5px;
+         width: 70%;
+         transition: border-color 0.3s;
+         }
+         .btn-btn-add-subtopic {
+         display: none;
+         color: #000000;
+         background-color: #00796b;
+         margin-left: 10px;
+         padding: 8px; /* افزایش padding */
+         border: 1px solid #ddd;
+         border-radius: 5px;
+         width: 70%;
+         transition: border-color 0.3s;
+         }
+         .edit-field:focus {
+         border-color: #00796b;
+         outline: none;
+         box-shadow: 0 0 5px rgba(0, 121, 107, 0.5);
+         }
+         .input-container {
+         width: 100%;
+         max-width: 800px;
+         display: flex;
+         gap: 10px;
+         align-items: center;
+         margin-bottom: 20px;
+         }
+         .input-container input {
+         flex: 1;
+         padding: 10px;
+         border: 1px solid #ddd;
+         border-radius: 35px;
+         transition: border-color 0.3s;
+         }
+         .input-container input:focus {
+         border-color: #00796b;
+         outline: none;
+         box-shadow: 0 0 5px rgba(0, 121, 107, 0.5);
+         }
+         #addLessonBtn {
+         padding: 10px 15px;
+         background-color: #ff0000;
+         color: white;
+         border: none;
+         font-weight:bold;
+         font-size:16px;
+         border-radius: 35px;
+         text-shadow: #037766 0px 7px 16px;
+         cursor: pointer;
+         transition: background-color 0.3s, transform 0.2s; /* انیمیشن در hover */
+         margin-left: 10px;
+         flex-shrink: 0;
+         width: 155px;
+         border: #000000 2px solid;
+         }
+         #addLessonBtn:hover {
+         background-color: #45a049;
+         transform: scale(1.05); /* بزرگ شدن در hover */
+         }
+         .btn {
+         cursor: pointer;
+         padding: 5px 10px;
+         border: none;
+         border-radius: 5px;
+         color: white;
+         transition: background-color 0.3s, transform 0.2s; /* انیمیشن */
+         }
+         .btn-edit {
+         background-color: #00796b;
+         margin: 4px;
+         border: #000000 2px solid;
+         width: 100px;
+         margin-right: 20px;
+         }
+         .btn-edit:hover {
+         background-color: #005a4d;
+         transform: scale(1.05); /* بزرگ شدن در hover */
+         }
+         .btn-delete {
+         background-color: #dc3545;
+          margin: 4px;
+         border: #000000 2px solid;
+         width: 100px;
+         margin-right: 20px;
 
-        .input-container input {
-            flex: 1;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            transition: border-color 0.3s;
-        }
-
-        .input-container input:focus {
-            border-color: #00796b;
-            outline: none;
-            box-shadow: 0 0 5px rgba(0, 121, 107, 0.5);
-        }
-
-        #addLessonBtn {
-            padding: 10px 15px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            margin-left: 10px;
-            flex-shrink: 0;
-            width: 150px;
-        }
-
-        #addLessonBtn:hover {
-            background-color: #45a049;
-        }
-
-        .btn {
-            cursor: pointer;
-            padding: 5px 10px;
-            border: none;
-            border-radius: 5px;
-            color: white;
-            transition: background-color 0.3s;
-        }
-
-        .btn-edit {
-            background-color: #00796b;
-        }
-
-        .btn-edit:hover {
-            background-color: #005a4d;
-        }
-
-        .btn-delete {
-            background-color: #dc3545;
-        }
-
-        .btn-delete:hover {
-            background-color: #c82333;
-        }
-
-        .progress-container {
-            width: 100%;
-            background-color: #f3f3f3;
-            border-radius: 5px;
-            overflow: hidden;
-            margin-top: 10px;
-        }
-
-        .progress {
-            height: 10px;
-            background-color: #4CAF50;
-            width: 0;
-            transition: width 0.3s;
-        }
-
-        /* استایل مدال */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgb(0,0,0);
-            background-color: rgba(0,0,0,0.4);
-            padding-top: 60px;
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 600px;
-            border-radius: 10px;
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .morphology-list {
-            list-style-type: none;
-            padding: 0;
-            margin-bottom: 10px;
-        }
-
-        .subtopic-list {
-            list-style-type: none;
-            padding: 0 0 0 20px; /* Indentation for subtopics */
-            margin-bottom: 10px;
-        }
-
-        /* استایل نوار کناری */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #f0f9fb;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(to bottom, #ffcc00, #ff3300);
-            border-radius: 10px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(to bottom, #ff9900, #cc0000);
-        }
-
-        /* ریسپانسیو */
-        @media (max-width: 600px) {
-            .lesson-item {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .lesson-item > div {
-                width: 100%;
-                display: flex;
-                justify-content: space-between;
-                margin-top: 5px;
-            }
-            .edit-field {
-                width: calc(100% - 120px);
-            }
-            .btn {
-                width: 48%;
-                margin-left: 5px;
-            }
-            .input-container {
-                flex-direction: column;
-            }
-            .input-container input {
-                margin-bottom: 10px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <h1>مدیریت دروس دانشگاهی</h1>
-    <div class="input-container">
-        <input type="text" id="newLessonInput" placeholder="نام درس جدید" />
-        <button id="addLessonBtn">افزودن درس جدید</button>
-    </div>
-    <ul class="lesson-list" id="lessonList">
-        <!-- دروس در اینجا اضافه می‌شوند -->
-    </ul>
-
-    <!-- مدال برای نمایش فصل‌ها -->
-    <div id="morphologyModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
+         }
+         .btn-delete:hover {
+         background-color: #c82333;
+         transform: scale(1.05); /* بزرگ شدن در hover */
+         }
+         .progress-container {
+         width: 100%;
+         background-color: #f3f3f3;
+         border-radius: 5px;
+         overflow: hidden;
+         margin-top: 10px;
+         border: #615d5d 1px solid;
+         
+         }
+         .progress {
+         height: 10px;
+         background:linear-gradient(yellow, red);
+         width: 0;
+         transition: width 0.3s;
+        
+        
+         }
+         .modal {
+         display: none;
+         position: fixed;
+         z-index: 1;
+         left: 0;
+         top: 0;
+         width: 100%;
+         height: 100%;
+         overflow: auto;
+         background-color: rgba(0, 0, 0, 0.4);
+         padding-top: 60px;
+         }
+         .modal-content {
+         background-color: #fefefe;
+         margin: 5% auto;
+         padding: 20px;
+         border: 1px solid #888;
+         width: 80%;
+         max-width: 600px;
+         border-radius: 10px;
+         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* سایه برای مدال */
+         animation: fadeIn 0.3s; /* انیمیشن ورود */
+         }
+         @keyframes fadeIn {
+         from { opacity: 0; }
+         to { opacity: 1; }
+         }
+         .close {
+         color: #aaa;
+         float: right;
+         font-size: 28px;
+         font-weight: bold;
+         border-radius: 10px;
+         }
+         .close:hover,
+         .close:focus {
+         color: black;
+         text-decoration: none;
+         cursor: pointer;
+         border-radius: 10px;
+         }
+         .morphology-list {
+         list-style-type: none;
+         padding: 0;
+         margin-bottom: 10px;
+         border-radius: 10px;
+         }
+         .subtopic-list {
+         list-style-type: none;
+         padding: 0 0 0 20px; /* Indentation for subtopics */
+         margin-bottom: 10px;
+         border-radius: 10px;
+         }
+         ::-webkit-scrollbar {
+         width: 15px;
+         }
+         ::-webkit-scrollbar-track {
+         background: #b7e7f1;
+         }
+         ::-webkit-scrollbar-thumb {
+         background: linear-gradient(to bottom, #ffcc00, #ff3300);
+         border-radius: 10px;
+         }
+         ::-webkit-scrollbar-thumb:hover {
+         background: linear-gradient(to bottom, #ff9900, #cc0000);
+         }
+         @media (max-width: 600px) {
+         .lesson-item {
+         flex-direction: column;
+         align-items: flex-start;
+         border-radius: 10px;
+         }
+         .lesson-item > div {
+         width: 100%;
+         display: flex;
+         justify-content: space-between;
+         margin-top: 5px;
+         border-radius: 10px;
+         }
+         .edit-field {
+         width: calc(100% - 120px);
+         border-radius: 10px;
+         }
+         .btn {
+         width: 48%;
+         margin-left: 5px;
+         border-radius: 10px;
+        
+         }
+         .input-container {
+         flex-direction: column;
+         align-items: flex-start;
+         border-radius: 10px;
+         }
+         .input-container input {
+         margin-bottom: 10px;
+        border-radius: 10px;
+         }
+         }
+      </style>
+   </head>
+   <body>
+      <h1>مدیریت دروس دانشگاهی</h1>
+      <div class="input-container">
+         <input type="text" id="newLessonInput" placeholder="نام درس جدید" />
+         <button id="addLessonBtn">افزودن درس جدید</button>
+      </div>
+      <ul class="lesson-list" id="lessonList">
+         <!-- دروس در اینجا اضافه می‌شوند -->
+      </ul>
+      <!-- مدال برای نمایش فصل‌ها -->
+      <div id="morphologyModal" class="modal">
+         <div class="modal-content">
+            <div class="close">&times;</div>
             <h2 id="modalLessonTitle"></h2>
             <ul class="morphology-list" id="morphologyList"></ul>
             <input type="text" id="newMorphologyInput" placeholder="فصل جدید" />
             <button id="addMorphologyBtn">افزودن فصل جدید</button>
-        </div>
-    </div>
-
-    <script>
-        const defaultLessons = [
-            'خاک شناسی',
-            'زراعت عمومی',
-            'ریخت شناسی گیاهی',
-            'سیستماتیک گیاهی',
-            'برنامه نویسی رایانه',
-            'تفسیر نهج البلاغه',
-            'شیمی آلی',
-            'شیمی تجزیه',
-            'آزمایشگاه آلی',
-            'آزمایشگاه تجزیه'
-        ];
-
-        const lessons = JSON.parse(localStorage.getItem('lessons')) || defaultLessons;
-        const morphologyTopics = JSON.parse(localStorage.getItem('morphologyTopics')) || {};
-
-        const lessonList = document.getElementById('lessonList');
-        const newLessonInput = document.getElementById('newLessonInput');
-        const addLessonBtn = document.getElementById('addLessonBtn');
-        const morphologyList = document.getElementById('morphologyList');
-        const newMorphologyInput = document.getElementById('newMorphologyInput');
-        const addMorphologyBtn = document.getElementById('addMorphologyBtn');
-        const morphologyModal = document.getElementById('morphologyModal');
-        const modalLessonTitle = document.getElementById('modalLessonTitle');
-        const closeModal = document.querySelector('.close');
-
-        const renderLessons = () => {
-            lessonList.innerHTML = '';
-            lessons.forEach((lesson, index) => {
-                const progress = morphologyTopics[lesson]?.progress || 0; // پیشرفت درس
-                const li = document.createElement('li');
-                li.className = 'lesson-item';
-                li.innerHTML = `
-                    <span>${lesson}</span>
-                    <div>
-                        <input type="text" class="edit-field" value="${lesson}" />
-                        <button class="btn btn-edit" data-index="${index}">ویرایش</button>
-                        <button class="btn btn-delete" data-index="${index}">حذف</button>
-                    </div>
-                    <div class="progress-container">
-                        <div class="progress" style="width: ${progress}%;"></div>
-                    </div>
-                `;
-                li.querySelector('.edit-field').addEventListener('input', (e) => {
-                    lessons[index] = e.target.value; // به‌روزرسانی نام درس
-                    saveLessons(); // ذخیره‌سازی تغییرات
-                });
-                li.querySelector('.btn-edit').addEventListener('click', () => {
-                    const editField = li.querySelector('.edit-field');
-                    editField.style.display = 'block';
-                    editField.focus();
-                });
-                li.querySelector('.btn-delete').addEventListener('click', () => {
-                    deleteLesson(index);
-                });
-                li.addEventListener('click', () => {
-                    showMorphologyTopics(lesson);
-                });
-                lessonList.appendChild(li);
-            });
-        };
-
-        const showMorphologyTopics = (lesson) => {
-            modalLessonTitle.textContent = lesson;
-            morphologyList.innerHTML = '';
-            const topics = morphologyTopics[lesson]?.topics || [];
-            topics.forEach((topic, index) => {
-                const progress = topic.progress || 0; // پیشرفت فصل
-                const li = document.createElement('li');
-                li.className = 'morphology-list-item';
-                li.innerHTML = `
-                    <span>${topic.title}</span>
-                    <input type="number" min="0" max="100" class="morphology-progress-input" value="${progress}" placeholder="پیشرفت (%)" />
-                    <button class="btn btn-add-subtopic" data-index="${index}">افزودن زیر فصل</button>
-                    <button class="btn btn-edit" data-index="${index}">ویرایش</button>
-                    <button class="btn btn-delete" data-index="${index}">حذف</button>
-                    <div class="progress-container">
-                        <div class="progress" style="width: ${progress}%;"></div>
-                    </div>
-                    <ul class="subtopic-list" id="subtopicList-${index}"></ul>
-                `;
-                li.querySelector('.morphology-progress-input').addEventListener('input', (e) => {
-                    const value = Math.min(100, Math.max(0, e.target.value)); // محدود کردن مقدار بین 0 و 100
-                    topic.progress = value;
-                    saveMorphologyTopics(); // ذخیره‌سازی پیشرفت فصل
-                    renderSubtopics(topic.subtopics, index); // به‌روزرسانی زیر فصل‌ها
-                });
-                li.querySelector('.btn-add-subtopic').addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    addSubtopic(lesson, index);
-                });
-                li.querySelector('.btn-edit').addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    editMorphologyTopic(lesson, index);
-                });
-                li.querySelector('.btn-delete').addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    deleteMorphologyTopic(lesson, index);
-                });
-                morphologyList.appendChild(li);
-                renderSubtopics(topic.subtopics, index);
-            });
-            morphologyModal.style.display = 'block';
-        };
-
-        const renderSubtopics = (subtopics, index) => {
-            const subtopicList = document.getElementById(`subtopicList-${index}`);
-            subtopicList.innerHTML = '';
-            subtopics.forEach((subtopic, subIndex) => {
-                const subLi = document.createElement('li');
-                const progress = subtopic.progress || 0; // پیشرفت زیر فصل
-                subLi.innerHTML = `
-                    <span>${subtopic.title}</span>
-                    <input type="number" min="0" max="100" class="subtopic-progress-input" value="${progress}" placeholder="پیشرفت (%)" />
-                    <button class="btn btn-edit-subtopic" data-subindex="${subIndex}">ویرایش</button>
-                    <button class="btn btn-delete-subtopic" data-subindex="${subIndex}">حذف</button>
-                    <div class="progress-container">
-                        <div class="progress" style="width: ${progress}%;"></div>
-                    </div>
-                `;
-                subLi.querySelector('.subtopic-progress-input').addEventListener('input', (e) => {
-                    const value = Math.min(100, Math.max(0, e.target.value)); // محدود کردن مقدار بین 0 و 100
-                    subtopic.progress = value;
-                    saveMorphologyTopics(); // ذخیره‌سازی پیشرفت زیر فصل
-                    renderSubtopics(subtopics, index); // به‌روزرسانی زیر فصل‌ها
-                });
-                subLi.querySelector('.btn-edit-subtopic').addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    editSubtopic(index, subIndex);
-                });
-                subLi.querySelector('.btn-delete-subtopic').addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    deleteSubtopic(index, subIndex);
-                });
-                subtopicList.appendChild(subLi);
-            });
-        };
-
-        const addMorphologyTopic = (lesson) => {
-            const title = newMorphologyInput.value.trim();
-            if (title) {
-                if (!morphologyTopics[lesson]) {
-                    morphologyTopics[lesson] = { topics: [], progress: 0 };
-                }
-                morphologyTopics[lesson].topics.push({ title: title, subtopics: [], progress: 0 });
-                newMorphologyInput.value = '';
-                saveMorphologyTopics(); // ذخیره‌سازی فصل‌ها
-                showMorphologyTopics(lesson); // Update the displayed topics
-            } else {
-                alert('لطفاً نام فصل را وارد کنید.');
-            }
-        };
-
-        const editMorphologyTopic = (lesson, index) => {
-            const newTitle = prompt('ویرایش فصل:', morphologyTopics[lesson].topics[index].title);
-            if (newTitle) {
-                morphologyTopics[lesson].topics[index].title = newTitle;
-                saveMorphologyTopics(); // ذخیره‌سازی فصل‌ها
-                showMorphologyTopics(lesson); // Update the displayed topics
-            }
-        };
-
-        const deleteMorphologyTopic = (lesson, index) => {
-            if (confirm('آیا از حذف این فصل مطمئن هستید؟')) {
-                morphologyTopics[lesson].topics.splice(index, 1);
-                saveMorphologyTopics(); // ذخیره‌سازی فصل‌ها
-                showMorphologyTopics(lesson); // Update the displayed topics
-            }
-        };
-
-        const addSubtopic = (lesson, index) => {
-            const subtopicInput = document.querySelector(`.morphology-list-item:nth-child(${index + 1}) .new-subtopic-input`);
-            const title = subtopicInput.value.trim();
-            if (title) {
-                morphologyTopics[lesson].topics[index].subtopics.push({ title: title, progress: 0 });
-                subtopicInput.value = '';
-                saveMorphologyTopics(); // ذخیره‌سازی فصل‌ها
-                renderSubtopics(morphologyTopics[lesson].topics[index].subtopics, index);
-            } else {
-                alert('لطفاً نام زیر فصل را وارد کنید.');
-            }
-        };
-
-        const editSubtopic = (index, subIndex) => {
-            const newTitle = prompt('ویرایش زیر فصل:', morphologyTopics[modalLessonTitle.textContent].topics[index].subtopics[subIndex].title);
-            if (newTitle) {
-                morphologyTopics[modalLessonTitle.textContent].topics[index].subtopics[subIndex].title = newTitle;
-                saveMorphologyTopics(); // ذخیره‌سازی فصل‌ها
-                renderSubtopics(morphologyTopics[modalLessonTitle.textContent].topics[index].subtopics, index);
-            }
-        };
-
-        const deleteSubtopic = (index, subIndex) => {
-            if (confirm('آیا از حذف این زیر فصل مطمئن هستید؟')) {
-                morphologyTopics[modalLessonTitle.textContent].topics[index].subtopics.splice(subIndex, 1);
-                saveMorphologyTopics(); // ذخیره‌سازی فصل‌ها
-                renderSubtopics(morphologyTopics[modalLessonTitle.textContent].topics[index].subtopics, index);
-            }
-        };
-
-        const saveLessons = () => {
-            localStorage.setItem('lessons', JSON.stringify(lessons));
-        };
-
-        const saveMorphologyTopics = () => {
-            localStorage.setItem('morphologyTopics', JSON.stringify(morphologyTopics));
-        };
-
-        const addLesson = () => {
-            const title = newLessonInput.value.trim();
-            if (title) {
-                lessons.push(title);
-                newLessonInput.value = '';
-                renderLessons();
-                saveLessons(); // Save to local storage
-            } else {
-                alert('لطفاً نام درس را وارد کنید.');
-            }
-        };
-
-        const deleteLesson = (index) => {
-            if (confirm('آیا از حذف این درس مطمئن هستید؟')) {
-                lessons.splice(index, 1);
-                renderLessons();
-                saveLessons(); // Save to local storage
-            }
-        };
-
-        addLessonBtn.addEventListener('click', addLesson);
-        addMorphologyBtn.addEventListener('click', () => {
-            const lesson = modalLessonTitle.textContent;
-            addMorphologyTopic(lesson);
-        });
-
-        lessonList.addEventListener('click', (e) => {
-            const index = e.target.dataset.index;
-            if (e.target.classList.contains('btn-edit')) {
-                const editField = e.target.parentElement.querySelector('.edit-field');
-                editField.style.display = 'block';
-                editField.focus();
-            } else if (e.target.classList.contains('btn-delete')) {
-                deleteLesson(index);
-            }
-        });
-
-        closeModal.addEventListener('click', () => {
-            morphologyModal.style.display = 'none';
-        });
-
-        window.onclick = function(event) {
-            if (event.target == morphologyModal) {
-                morphologyModal.style.display = 'none';
-            }
-        }
-
-        // بارگذاری دروس و فصل‌ها از localStorage
-        renderLessons();
-    </script>
-</body>
+         </div>
+      </div>
+      <script>
+         const defaultLessons = [
+             'خاک شناسی',
+             'زراعت عمومی',
+             'ریخت شناسی گیاهی',
+             'سیستماتیک گیاهی',
+             'برنامه نویسی رایانه',
+             'تفسیر نهج البلاغه',
+             'شیمی آلی',
+             'شیمی تجزیه',
+             'آزمایشگاه آلی',
+             'آزمایشگاه تجزیه'
+         ];
+         
+         const lessons = JSON.parse(localStorage.getItem('lessons')) || defaultLessons;
+         const morphologyTopics = JSON.parse(localStorage.getItem('morphologyTopics')) || {};
+         
+         const lessonList = document.getElementById('lessonList');
+         const newLessonInput = document.getElementById('newLessonInput');
+         const addLessonBtn = document.getElementById('addLessonBtn');
+         const morphologyList = document.getElementById('morphologyList');
+         const newMorphologyInput = document.getElementById('newMorphologyInput');
+         const addMorphologyBtn = document.getElementById('addMorphologyBtn');
+         const morphologyModal = document.getElementById('morphologyModal');
+         const modalLessonTitle = document.getElementById('modalLessonTitle');
+         const closeModal = document.querySelector('.close');
+         
+         const renderLessons = () => {
+             lessonList.innerHTML = '';
+             lessons.forEach((lesson, index) => {
+                 const progress = morphologyTopics[lesson]?.progress || 0; // پیشرفت درس
+                 const li = document.createElement('li');
+                 li.className = 'lesson-item';
+                 li.innerHTML = `
+                     <span>${lesson}</span>
+                     <div>
+                         <input type="text" class="edit-field" value="${lesson}" />
+                         <button class="btn btn-edit" data-index="${index}">ویرایش</button>
+                         <button class="btn btn-delete" data-index="${index}">حذف</button>
+                     </div>
+                     <div class="progress-container">
+                         <div class="progress" style="width: ${progress}%;"></div>
+                     </div>
+                 `;
+                 li.querySelector('.edit-field').addEventListener('input', (e) => {
+                     lessons[index] = e.target.value; // به‌روزرسانی نام درس
+                     saveLessons(); // ذخیره‌سازی تغییرات
+                 });
+                 li.querySelector('.btn-edit').addEventListener('click', () => {
+                     const editField = li.querySelector('.edit-field');
+                     editField.style.display = 'block';
+                     editField.focus();
+                 });
+                 li.querySelector('.btn-delete').addEventListener('click', () => {
+                     deleteLesson(index);
+                 });
+                 li.addEventListener('click', () => {
+                     showMorphologyTopics(lesson);
+                 });
+                 lessonList.appendChild(li);
+             });
+         };
+         
+         const showMorphologyTopics = (lesson) => {
+             modalLessonTitle.textContent = lesson;
+             morphologyList.innerHTML = '';
+             const topics = morphologyTopics[lesson]?.topics || [];
+             topics.forEach((topic, index) => {
+                 const progress = topic.progress || 0; // پیشرفت فصل
+                 const li = document.createElement('li');
+                 li.className = 'morphology-list-item';
+                 li.innerHTML = `
+                     <div>${topic.title}</div>
+                     <input type="number" min="0" max="100" class="morphology-progress-input" value="${progress}" placeholder="پیشرفت (%)" />
+                     <button class="btn btn-add-subtopic" data-index="${index}">افزودن زیر فصل</button>
+                     <button class="btn btn-edit" data-index="${index}">ویرایش</button>
+                     <button class="btn btn-delete" data-index="${index}">حذف</button>
+                     <div class="progress-container">
+                         <div class="progress" style="width: ${progress}%;"></div>
+                     </div>
+                     <ul class="subtopic-list" id="subtopicList-${index}"></ul>
+                 `;
+                 li.querySelector('.morphology-progress-input').addEventListener('input', (e) => {
+                     const value = Math.min(100, Math.max(0, e.target.value)); // محدود کردن مقدار بین 0 و 100
+                     topic.progress = value;
+                     saveMorphologyTopics(); // ذخیره‌سازی پیشرفت فصل
+                     renderSubtopics(topic.subtopics, index); // به‌روزرسانی زیر فصل‌ها
+                 });
+                 li.querySelector('.btn-add-subtopic').addEventListener('click', (e) => {
+                     e.stopPropagation();
+                     addSubtopic(lesson, index);
+                 });
+                 li.querySelector('.btn-edit').addEventListener('click', (e) => {
+                     e.stopPropagation();
+                     editMorphologyTopic(lesson, index);
+                 });
+                 li.querySelector('.btn-delete').addEventListener('click', (e) => {
+                     e.stopPropagation();
+                     deleteMorphologyTopic(lesson, index);
+                 });
+                 morphologyList.appendChild(li);
+                 renderSubtopics(topic.subtopics, index);
+             });
+             morphologyModal.style.display = 'block';
+         };
+         
+         const renderSubtopics = (subtopics, index) => {
+             const subtopicList = document.getElementById(`subtopicList-${index}`);
+             subtopicList.innerHTML = '';
+             subtopics.forEach((subtopic, subIndex) => {
+                 const subLi = document.createElement('li');
+                 const progress = subtopic.progress || 0; // پیشرفت زیر فصل
+                 subLi.innerHTML = `
+                     <div>${subtopic.title}</div>
+                     <input type="number" min="0" max="100" class="subtopic-progress-input" value="${progress}" placeholder="پیشرفت (%)" />
+                     <button class="btn btn-edit-subtopic" data-subindex="${subIndex}">ویرایش</button>
+                     <button class="btn btn-delete-subtopic" data-subindex="${subIndex}">حذف</button>
+                     <div class="progress-container">
+                         <div class="progress" style="width: ${progress}%;"></div>
+                     </div>
+                 `;
+                 subLi.querySelector('.subtopic-progress-input').addEventListener('input', (e) => {
+                     const value = Math.min(100, Math.max(0, e.target.value)); // محدود کردن مقدار بین 0 و 100
+                     subtopic.progress = value;
+                     saveMorphologyTopics(); // ذخیره‌سازی پیشرفت زیر فصل
+                     renderSubtopics(subtopics, index); // به‌روزرسانی زیر فصل‌ها
+                 });
+                 subLi.querySelector('.btn-edit-subtopic').addEventListener('click', (e) => {
+                     e.stopPropagation();
+                     editSubtopic(index, subIndex);
+                 });
+                 subLi.querySelector('.btn-delete-subtopic').addEventListener('click', (e) => {
+                     e.stopPropagation();
+                     deleteSubtopic(index, subIndex);
+                 });
+                 subtopicList.appendChild(subLi);
+             });
+         };
+         
+         const addMorphologyTopic = (lesson) => {
+             const title = newMorphologyInput.value.trim();
+             if (title) {
+                 if (!morphologyTopics[lesson]) {
+                     morphologyTopics[lesson] = { topics: [], progress: 0 };
+                 }
+                 morphologyTopics[lesson].topics.push({ title: title, subtopics: [], progress: 0 });
+                 newMorphologyInput.value = '';
+                 saveMorphologyTopics(); // ذخیره‌سازی فصل‌ها
+                 showMorphologyTopics(lesson); // Update the displayed topics
+             } else {
+                 alert('لطفاً نام فصل را وارد کنید.');
+             }
+         };
+         
+         const editMorphologyTopic = (lesson, index) => {
+             const newTitle = prompt('ویرایش فصل:', morphologyTopics[lesson].topics[index].title);
+             if (newTitle) {
+                 morphologyTopics[lesson].topics[index].title = newTitle;
+                 saveMorphologyTopics(); // ذخیره‌سازی فصل‌ها
+                 showMorphologyTopics(lesson); // Update the displayed topics
+             }
+         };
+         
+         const deleteMorphologyTopic = (lesson, index) => {
+             if (confirm('آیا از حذف این فصل مطمئن هستید؟')) {
+                 morphologyTopics[lesson].topics.splice(index, 1);
+                 saveMorphologyTopics(); // ذخیره‌سازی فصل‌ها
+                 showMorphologyTopics(lesson); // Update the displayed topics
+             }
+         };
+         
+         const addSubtopic = (lesson, index) => {
+             const subtopicInput = document.querySelector(`.morphology-list-item:nth-child(${index + 1}) .new-subtopic-input`);
+             const title = subtopicInput.value.trim();
+             if (title) {
+                 morphologyTopics[lesson].topics[index].subtopics.push({ title: title, progress: 0 });
+                 subtopicInput.value = '';
+                 saveMorphologyTopics(); // ذخیره‌سازی فصل‌ها
+                 renderSubtopics(morphologyTopics[lesson].topics[index].subtopics, index);
+             } else {
+                 alert('لطفاً نام زیر فصل را وارد کنید.');
+             }
+         };
+         
+         const editSubtopic = (index, subIndex) => {
+             const newTitle = prompt('ویرایش زیر فصل:', morphologyTopics[modalLessonTitle.textContent].topics[index].subtopics[subIndex].title);
+             if (newTitle) {
+                 morphologyTopics[modalLessonTitle.textContent].topics[index].subtopics[subIndex].title = newTitle;
+                 saveMorphologyTopics(); // ذخیره‌سازی فصل‌ها
+                 renderSubtopics(morphologyTopics[modalLessonTitle.textContent].topics[index].subtopics, index);
+             }
+         };
+         
+         const deleteSubtopic = (index, subIndex) => {
+             if (confirm('آیا از حذف این زیر فصل مطمئن هستید؟')) {
+                 morphologyTopics[modalLessonTitle.textContent].topics[index].subtopics.splice(subIndex, 1);
+                 saveMorphologyTopics(); // ذخیره‌سازی فصل‌ها
+                 renderSubtopics(morphologyTopics[modalLessonTitle.textContent].topics[index].subtopics, index);
+             }
+         };
+         
+         const saveLessons = () => {
+             localStorage.setItem('lessons', JSON.stringify(lessons));
+         };
+         
+         const saveMorphologyTopics = () => {
+             localStorage.setItem('morphologyTopics', JSON.stringify(morphologyTopics));
+         };
+         
+         const addLesson = () => {
+             const title = newLessonInput.value.trim();
+             if (title) {
+                 lessons.push(title);
+                 newLessonInput.value = '';
+                 renderLessons();
+                 saveLessons(); // Save to local storage
+             } else {
+                 alert('لطفاً نام درس را وارد کنید.');
+             }
+         };
+         
+         const deleteLesson = (index) => {
+             if (confirm('آیا از حذف این درس مطمئن هستید؟')) {
+                 lessons.splice(index, 1);
+                 renderLessons();
+                 saveLessons(); // Save to local storage
+             }
+         };
+         
+         addLessonBtn.addEventListener('click', addLesson);
+         addMorphologyBtn.addEventListener('click', () => {
+             const lesson = modalLessonTitle.textContent;
+             addMorphologyTopic(lesson);
+         });
+         
+         lessonList.addEventListener('click', (e) => {
+             const index = e.target.dataset.index;
+             if (e.target.classList.contains('btn-edit')) {
+                 const editField = e.target.parentElement.querySelector('.edit-field');
+                 editField.style.display = 'block';
+                 editField.focus();
+             } else if (e.target.classList.contains('btn-delete')) {
+                 deleteLesson(index);
+             }
+         });
+         
+         closeModal.addEventListener('click', () => {
+             morphologyModal.style.display = 'none';
+         });
+         
+         window.onclick = function(event) {
+             if (event.target == morphologyModal) {
+                 morphologyModal.style.display = 'none';
+             }
+         }
+         
+         // بارگذاری دروس و فصل‌ها از localStorage
+         renderLessons();
+      </script>
+   </body>
 </html>
