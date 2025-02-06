@@ -105,10 +105,7 @@
             margin-left: 10px;
             flex-shrink: 0;
             width: 150px;
-        }
-
-        #addLessonBtn:hover {
-            background-color: #45a049;
+            display: none; /* مخفی کردن دکمه افزودن درس جدید */
         }
 
         .btn {
@@ -270,7 +267,28 @@
     </div>
 
     <script>
-        const lessons = JSON.parse(localStorage.getItem('lessons')) || [];
+        const defaultLessons = [
+            'خاک شناسی',
+            'زراعت عمومی',
+            'ریخت شناسی گیاهی',
+            'سیستماتیک گیاهی',
+            'برنامه نویسی رایانه',
+            'تفسیر نهج البلاغه',
+            'شیمی آلی',
+            'شیمی تجزیه',
+            'آزمایشگاه آلی',
+            'آزمایشگاه تجزیه'
+        ];
+
+        // بارگذاری دروس از localStorage یا استفاده از دروس پیش‌فرض
+        let lessons = JSON.parse(localStorage.getItem('lessons'));
+
+        // اگر دروس وجود ندارند، دروس پیش‌فرض را ذخیره کن
+        if (!lessons || lessons.length === 0) {
+            lessons = defaultLessons;
+            localStorage.setItem('lessons', JSON.stringify(lessons));
+        }
+
         const morphologyTopics = JSON.parse(localStorage.getItem('morphologyTopics')) || {};
 
         const lessonList = document.getElementById('lessonList');
@@ -292,7 +310,7 @@
                 li.innerHTML = `
                     <span>${lesson}</span>
                     <div>
-                        <input type="number" min="0" max="100" class="edit-field" value="${progress}" placeholder="پیشرفت (%)" />
+                        <input type="text" class="edit-field" value="${lesson}" />
                         <button class="btn btn-edit" data-index="${index}">ویرایش</button>
                         <button class="btn btn-delete" data-index="${index}">حذف</button>
                     </div>
@@ -301,10 +319,16 @@
                     </div>
                 `;
                 li.querySelector('.edit-field').addEventListener('input', (e) => {
-                    const value = Math.min(100, Math.max(0, e.target.value)); // محدود کردن مقدار بین 0 و 100
-                    morphologyTopics[lesson].progress = value;
-                    saveMorphologyTopics(); // ذخیره‌سازی پیشرفت درس
-                    renderLessons(); // به‌روزرسانی نمایش درس‌ها
+                    lessons[index] = e.target.value; // به‌روزرسانی نام درس
+                    saveLessons(); // ذخیره‌سازی تغییرات
+                });
+                li.querySelector('.btn-edit').addEventListener('click', () => {
+                    const editField = li.querySelector('.edit-field');
+                    editField.style.display = 'block';
+                    editField.focus();
+                });
+                li.querySelector('.btn-delete').addEventListener('click', () => {
+                    deleteLesson(index);
                 });
                 li.addEventListener('click', () => {
                     showMorphologyTopics(lesson);
@@ -422,11 +446,9 @@
         };
 
         const addSubtopic = (lesson, index) => {
-            const subtopicInput = document.querySelector(`.morphology-list-item:nth-child(${index + 1}) .new-subtopic-input`);
-            const title = subtopicInput.value.trim();
+            const title = prompt('نام زیر فصل را وارد کنید:');
             if (title) {
                 morphologyTopics[lesson].topics[index].subtopics.push({ title: title, progress: 0 });
-                subtopicInput.value = '';
                 saveMorphologyTopics(); // ذخیره‌سازی فصل‌ها
                 renderSubtopics(morphologyTopics[lesson].topics[index].subtopics, index);
             } else {
@@ -459,64 +481,18 @@
             localStorage.setItem('morphologyTopics', JSON.stringify(morphologyTopics));
         };
 
-        const addLesson = () => {
-            const title = newLessonInput.value.trim();
-            if (title) {
-                lessons.push(title);
-                newLessonInput.value = '';
-                renderLessons();
-                saveLessons(); // Save to local storage
-            } else {
-                alert('لطفاً نام درس را وارد کنید.');
-            }
-        };
-
-        const editLesson = (index) => {
-            const editField = document.querySelector(`.lesson-item:nth-child(${index + 1}) .edit-field`);
-            const newTitle = editField.value.trim();
-            if (newTitle) {
-                lessons[index] = newTitle;
-                renderLessons();
-                saveLessons(); // Save to local storage
-            } else {
-                alert('لطفاً نام درس را وارد کنید.');
-            }
-        };
-
         const deleteLesson = (index) => {
             if (confirm('آیا از حذف این درس مطمئن هستید؟')) {
+                const lesson = lessons[index];
                 lessons.splice(index, 1);
-                renderLessons();
+                delete morphologyTopics[lesson]; // حذف فصل‌ها و زیر فصل‌های مربوط به درس
                 saveLessons(); // Save to local storage
+                saveMorphologyTopics(); // Save morphology topics
+                renderLessons();
             }
         };
 
-        addLessonBtn.addEventListener('click', addLesson);
-        addMorphologyBtn.addEventListener('click', () => {
-            const lesson = modalLessonTitle.textContent;
-            addMorphologyTopic(lesson);
-        });
-
-        lessonList.addEventListener('click', (e) => {
-            const index = e.target.dataset.index;
-            if (e.target.classList.contains('btn-edit')) {
-                editLesson(index);
-            } else if (e.target.classList.contains('btn-delete')) {
-                deleteLesson(index);
-            }
-        });
-
-        closeModal.addEventListener('click', () => {
-            morphologyModal.style.display = 'none';
-        });
-
-        window.onclick = function(event) {
-            if (event.target == morphologyModal) {
-                morphologyModal.style.display = 'none';
-            }
-        }
-
-        // بارگذاری دروس و فصل‌ها از localStorage
+        // فقط امکان ویرایش و حذف دروس موجود
         renderLessons();
     </script>
 </body>
