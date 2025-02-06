@@ -105,7 +105,10 @@
             margin-left: 10px;
             flex-shrink: 0;
             width: 150px;
-            display: none; /* مخفی کردن دکمه افزودن درس جدید */
+        }
+
+        #addLessonBtn:hover {
+            background-color: #45a049;
         }
 
         .btn {
@@ -280,15 +283,7 @@
             'آزمایشگاه تجزیه'
         ];
 
-        // بارگذاری دروس از localStorage یا استفاده از دروس پیش‌فرض
-        let lessons = JSON.parse(localStorage.getItem('lessons'));
-
-        // اگر دروس وجود ندارند، دروس پیش‌فرض را ذخیره کن
-        if (!lessons || lessons.length === 0) {
-            lessons = defaultLessons;
-            localStorage.setItem('lessons', JSON.stringify(lessons));
-        }
-
+        const lessons = JSON.parse(localStorage.getItem('lessons')) || defaultLessons;
         const morphologyTopics = JSON.parse(localStorage.getItem('morphologyTopics')) || {};
 
         const lessonList = document.getElementById('lessonList');
@@ -446,9 +441,11 @@
         };
 
         const addSubtopic = (lesson, index) => {
-            const title = prompt('نام زیر فصل را وارد کنید:');
+            const subtopicInput = document.querySelector(`.morphology-list-item:nth-child(${index + 1}) .new-subtopic-input`);
+            const title = subtopicInput.value.trim();
             if (title) {
                 morphologyTopics[lesson].topics[index].subtopics.push({ title: title, progress: 0 });
+                subtopicInput.value = '';
                 saveMorphologyTopics(); // ذخیره‌سازی فصل‌ها
                 renderSubtopics(morphologyTopics[lesson].topics[index].subtopics, index);
             } else {
@@ -481,18 +478,54 @@
             localStorage.setItem('morphologyTopics', JSON.stringify(morphologyTopics));
         };
 
-        const deleteLesson = (index) => {
-            if (confirm('آیا از حذف این درس مطمئن هستید؟')) {
-                const lesson = lessons[index];
-                lessons.splice(index, 1);
-                delete morphologyTopics[lesson]; // حذف فصل‌ها و زیر فصل‌های مربوط به درس
-                saveLessons(); // Save to local storage
-                saveMorphologyTopics(); // Save morphology topics
+        const addLesson = () => {
+            const title = newLessonInput.value.trim();
+            if (title) {
+                lessons.push(title);
+                newLessonInput.value = '';
                 renderLessons();
+                saveLessons(); // Save to local storage
+            } else {
+                alert('لطفاً نام درس را وارد کنید.');
             }
         };
 
-        // فقط امکان ویرایش و حذف دروس موجود
+        const deleteLesson = (index) => {
+            if (confirm('آیا از حذف این درس مطمئن هستید؟')) {
+                lessons.splice(index, 1);
+                renderLessons();
+                saveLessons(); // Save to local storage
+            }
+        };
+
+        addLessonBtn.addEventListener('click', addLesson);
+        addMorphologyBtn.addEventListener('click', () => {
+            const lesson = modalLessonTitle.textContent;
+            addMorphologyTopic(lesson);
+        });
+
+        lessonList.addEventListener('click', (e) => {
+            const index = e.target.dataset.index;
+            if (e.target.classList.contains('btn-edit')) {
+                const editField = e.target.parentElement.querySelector('.edit-field');
+                editField.style.display = 'block';
+                editField.focus();
+            } else if (e.target.classList.contains('btn-delete')) {
+                deleteLesson(index);
+            }
+        });
+
+        closeModal.addEventListener('click', () => {
+            morphologyModal.style.display = 'none';
+        });
+
+        window.onclick = function(event) {
+            if (event.target == morphologyModal) {
+                morphologyModal.style.display = 'none';
+            }
+        }
+
+        // بارگذاری دروس و فصل‌ها از localStorage
         renderLessons();
     </script>
 </body>
