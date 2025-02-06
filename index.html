@@ -12,10 +12,9 @@
          font-family: 'Vazir', sans-serif;
          box-sizing: border-box;
          border-radius: 10px;
-         
          }
          body {
-            border-radius: 10px;
+         border-radius: 10px;
          background-color: #f0f9fb;
          color: #000000;
          margin: 0;
@@ -27,16 +26,16 @@
          padding: 20px;
          overflow-y: scroll;
          }
-         span{
-            width: 200px;
-            height: 80px;
-            padding: auto;
-            margin: auto;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            display: flex;
-            background-color: #ffd900;
+         span {
+         width: 200px;
+         height: 80px;
+         padding: auto;
+         margin: auto;
+         justify-content: center;
+         align-items: center;
+         text-align: center;
+         display: flex;
+         background-color: #ffd900;
          }
          h1 {
          text-align: center;
@@ -53,7 +52,7 @@
          display: flex;
          justify-content: space-between;
          align-items: center;
-         padding:25px; /* افزایش padding */
+         padding: 25px; /* افزایش padding */
          background: #ffffff;
          border: 1px solid #ddd;
          border-radius: 50px; /* گردی بیشتر */
@@ -115,8 +114,8 @@
          background-color: #ff0000;
          color: white;
          border: none;
-         font-weight:bold;
-         font-size:16px;
+         font-weight: bold;
+         font-size: 16px;
          border-radius: 35px;
          text-shadow: #037766 0px 7px 16px;
          cursor: pointer;
@@ -151,11 +150,10 @@
          }
          .btn-delete {
          background-color: #dc3545;
-          margin: 4px;
+         margin: 4px;
          border: #000000 2px solid;
          width: 100px;
          margin-right: 20px;
-
          }
          .btn-delete:hover {
          background-color: #c82333;
@@ -168,15 +166,12 @@
          overflow: hidden;
          margin-top: 10px;
          border: #615d5d 1px solid;
-         
          }
          .progress {
          height: 10px;
-         background:linear-gradient(yellow, red);
+         background: linear-gradient(yellow, red);
          width: 0;
          transition: width 0.3s;
-        
-        
          }
          .modal {
          display: none;
@@ -225,12 +220,6 @@
          margin-bottom: 10px;
          border-radius: 10px;
          }
-         .subtopic-list {
-         list-style-type: none;
-         padding: 0 0 0 20px; /* Indentation for subtopics */
-         margin-bottom: 10px;
-         border-radius: 10px;
-         }
          ::-webkit-scrollbar {
          width: 15px;
          }
@@ -265,7 +254,6 @@
          width: 48%;
          margin-left: 5px;
          border-radius: 10px;
-        
          }
          .input-container {
          flex-direction: column;
@@ -274,7 +262,7 @@
          }
          .input-container input {
          margin-bottom: 10px;
-        border-radius: 10px;
+         border-radius: 10px;
          }
          }
       </style>
@@ -372,23 +360,16 @@
                  li.innerHTML = `
                      <div>${topic.title}</div>
                      <input type="number" min="0" max="100" class="morphology-progress-input" value="${progress}" placeholder="پیشرفت (%)" />
-                     <button class="btn btn-add-subtopic" data-index="${index}">افزودن زیر فصل</button>
                      <button class="btn btn-edit" data-index="${index}">ویرایش</button>
                      <button class="btn btn-delete" data-index="${index}">حذف</button>
                      <div class="progress-container">
                          <div class="progress" style="width: ${progress}%;"></div>
                      </div>
-                     <ul class="subtopic-list" id="subtopicList-${index}"></ul>
                  `;
                  li.querySelector('.morphology-progress-input').addEventListener('input', (e) => {
                      const value = Math.min(100, Math.max(0, e.target.value)); // محدود کردن مقدار بین 0 و 100
                      topic.progress = value;
                      saveMorphologyTopics(); // ذخیره‌سازی پیشرفت فصل
-                     renderSubtopics(topic.subtopics, index); // به‌روزرسانی زیر فصل‌ها
-                 });
-                 li.querySelector('.btn-add-subtopic').addEventListener('click', (e) => {
-                     e.stopPropagation();
-                     addSubtopic(lesson, index);
                  });
                  li.querySelector('.btn-edit').addEventListener('click', (e) => {
                      e.stopPropagation();
@@ -399,42 +380,8 @@
                      deleteMorphologyTopic(lesson, index);
                  });
                  morphologyList.appendChild(li);
-                 renderSubtopics(topic.subtopics, index);
              });
              morphologyModal.style.display = 'block';
-         };
-         
-         const renderSubtopics = (subtopics, index) => {
-             const subtopicList = document.getElementById(`subtopicList-${index}`);
-             subtopicList.innerHTML = '';
-             subtopics.forEach((subtopic, subIndex) => {
-                 const subLi = document.createElement('li');
-                 const progress = subtopic.progress || 0; // پیشرفت زیر فصل
-                 subLi.innerHTML = `
-                     <div>${subtopic.title}</div>
-                     <input type="number" min="0" max="100" class="subtopic-progress-input" value="${progress}" placeholder="پیشرفت (%)" />
-                     <button class="btn btn-edit-subtopic" data-subindex="${subIndex}">ویرایش</button>
-                     <button class="btn btn-delete-subtopic" data-subindex="${subIndex}">حذف</button>
-                     <div class="progress-container">
-                         <div class="progress" style="width: ${progress}%;"></div>
-                     </div>
-                 `;
-                 subLi.querySelector('.subtopic-progress-input').addEventListener('input', (e) => {
-                     const value = Math.min(100, Math.max(0, e.target.value)); // محدود کردن مقدار بین 0 و 100
-                     subtopic.progress = value;
-                     saveMorphologyTopics(); // ذخیره‌سازی پیشرفت زیر فصل
-                     renderSubtopics(subtopics, index); // به‌روزرسانی زیر فصل‌ها
-                 });
-                 subLi.querySelector('.btn-edit-subtopic').addEventListener('click', (e) => {
-                     e.stopPropagation();
-                     editSubtopic(index, subIndex);
-                 });
-                 subLi.querySelector('.btn-delete-subtopic').addEventListener('click', (e) => {
-                     e.stopPropagation();
-                     deleteSubtopic(index, subIndex);
-                 });
-                 subtopicList.appendChild(subLi);
-             });
          };
          
          const addMorphologyTopic = (lesson) => {
@@ -443,7 +390,7 @@
                  if (!morphologyTopics[lesson]) {
                      morphologyTopics[lesson] = { topics: [], progress: 0 };
                  }
-                 morphologyTopics[lesson].topics.push({ title: title, subtopics: [], progress: 0 });
+                 morphologyTopics[lesson].topics.push({ title: title, progress: 0 });
                  newMorphologyInput.value = '';
                  saveMorphologyTopics(); // ذخیره‌سازی فصل‌ها
                  showMorphologyTopics(lesson); // Update the displayed topics
@@ -466,36 +413,6 @@
                  morphologyTopics[lesson].topics.splice(index, 1);
                  saveMorphologyTopics(); // ذخیره‌سازی فصل‌ها
                  showMorphologyTopics(lesson); // Update the displayed topics
-             }
-         };
-         
-         const addSubtopic = (lesson, index) => {
-             const subtopicInput = document.querySelector(`.morphology-list-item:nth-child(${index + 1}) .new-subtopic-input`);
-             const title = subtopicInput.value.trim();
-             if (title) {
-                 morphologyTopics[lesson].topics[index].subtopics.push({ title: title, progress: 0 });
-                 subtopicInput.value = '';
-                 saveMorphologyTopics(); // ذخیره‌سازی فصل‌ها
-                 renderSubtopics(morphologyTopics[lesson].topics[index].subtopics, index);
-             } else {
-                 alert('لطفاً نام زیر فصل را وارد کنید.');
-             }
-         };
-         
-         const editSubtopic = (index, subIndex) => {
-             const newTitle = prompt('ویرایش زیر فصل:', morphologyTopics[modalLessonTitle.textContent].topics[index].subtopics[subIndex].title);
-             if (newTitle) {
-                 morphologyTopics[modalLessonTitle.textContent].topics[index].subtopics[subIndex].title = newTitle;
-                 saveMorphologyTopics(); // ذخیره‌سازی فصل‌ها
-                 renderSubtopics(morphologyTopics[modalLessonTitle.textContent].topics[index].subtopics, index);
-             }
-         };
-         
-         const deleteSubtopic = (index, subIndex) => {
-             if (confirm('آیا از حذف این زیر فصل مطمئن هستید؟')) {
-                 morphologyTopics[modalLessonTitle.textContent].topics[index].subtopics.splice(subIndex, 1);
-                 saveMorphologyTopics(); // ذخیره‌سازی فصل‌ها
-                 renderSubtopics(morphologyTopics[modalLessonTitle.textContent].topics[index].subtopics, index);
              }
          };
          
@@ -531,17 +448,6 @@
          addMorphologyBtn.addEventListener('click', () => {
              const lesson = modalLessonTitle.textContent;
              addMorphologyTopic(lesson);
-         });
-         
-         lessonList.addEventListener('click', (e) => {
-             const index = e.target.dataset.index;
-             if (e.target.classList.contains('btn-edit')) {
-                 const editField = e.target.parentElement.querySelector('.edit-field');
-                 editField.style.display = 'block';
-                 editField.focus();
-             } else if (e.target.classList.contains('btn-delete')) {
-                 deleteLesson(index);
-             }
          });
          
          closeModal.addEventListener('click', () => {
