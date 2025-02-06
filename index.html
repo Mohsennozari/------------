@@ -3,311 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="سیستم مدیریت و سازماندهی دروس دانشگاهی">
-    <title>فهرست دروس پیشرفته</title>
+    <meta name="description" content="مدیریت دروس دانشگاهی">
+    <title>مدیریت دروس</title>
     
-    <!-- منابع خارجی -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css">
-    
     <style>
-        :root {
-            --primary-color: #00796b;
-            --secondary-color: #4CAF50;
-            --danger-color: #dc3545;
-            --background-color: #f0f9fb;
-            --text-color: #2c3e50;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
         body {
-            font-family: Vazir, Roboto, sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            line-height: 1.6;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f9fb;
+            color: #333;
             padding: 20px;
+            margin: 0;
         }
-
         h1 {
             text-align: center;
-            color: var(--primary-color);
-            margin: 2rem 0;
-            font-size: 2.5rem;
+            margin-bottom: 20px;
         }
-
-        .search-container {
+        .lesson-list {
+            list-style-type: none;
+            padding: 0;
             max-width: 800px;
-            margin: 0 auto 2rem;
-            position: relative;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 1rem 1.5rem;
-            border: 2px solid #ddd;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 10px rgba(0, 121, 107, 0.2);
-        }
-
-        .container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-            max-width: 1200px;
             margin: 0 auto;
         }
-
-        .lesson-card {
-            background: linear-gradient(135deg, var(--color1), var(--color2));
-            border-radius: 15px;
-            padding: 1.5rem;
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            color: white;
-            position: relative;
-            overflow: hidden;
-            border: none;
-        }
-
-        .lesson-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(5px);
-            z-index: 1;
-        }
-
-        .lesson-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .lesson-card i {
-            margin-left: 0.8rem;
-        }
-
-        .lesson-content {
-            position: relative;
-            z-index: 2;
-        }
-
-        /* رنگ بندی کارت‌ها */
-        .lesson-card:nth-child(6n+1) { --color1: #FF6B6B; --color2: #FF8E53; }
-        .lesson-card:nth-child(6n+2) { --color1: #6BCB77; --color2: #4D96FF; }
-        .lesson-card:nth-child(6n+3) { --color1: #FFD93D; --color2: #FF9F43; }
-        .lesson-card:nth-child(6n+4) { --color1: #4D96FF; --color2: #6BCB77; }
-        .lesson-card:nth-child(6n+5) { --color1: #9C27B0; --color2: #673AB7; }
-        .lesson-card:nth-child(6n+6) { --color1: #00BCD4; --color2: #009688; }
-
-        .lesson-details {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 2rem;
-            margin-top: 1rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            display: none;
-            position: relative;
-            z-index: 1000;
-        }
-
-        .editor-tools {
+        .lesson-item {
             display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .editor-btn {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: #fff;
+            border: 1px solid #ddd;
             border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s ease;
+            margin-bottom: 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
-
-        .editor-btn:hover {
-            background: #005a4d;
+        .lesson-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-
-        .chapter-list {
-            list-style: none;
-        }
-
-        .chapter-item {
-            padding: 1rem;
-            background: #f8f9fa;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        .status-group {
-            display: flex;
-            gap: 1rem;
-            margin-right: auto;
-        }
-
-        .status-label {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
         .edit-field {
-            flex: 1 1 100%;
-            padding: 0.5rem;
-            border: 2px solid var(--primary-color);
-            border-radius: 5px;
             display: none;
+            margin-left: 10px;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 70%;
+            transition: border-color 0.3s;
         }
-
-        .btn-group {
+        .edit-field:focus {
+            border-color: #00796b;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 121, 107, 0.5);
+        }
+        .input-container {
+            width: 100%;
             display: flex;
-            gap: 0.5rem;
+            margin-bottom: 20px;
         }
-
+        .input-container input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            transition: border-color 0.3s;
+        }
+        .input-container input:focus {
+            border-color: #00796b;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 121, 107, 0.5);
+        }
         .btn {
-            padding: 0.5rem 1rem;
+            cursor: pointer;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            transition: background-color 0.3s;
+        }
+        .btn-edit {
+            background-color: #00796b;
+        }
+        .btn-edit:hover {
+            background-color: #005a4d;
+        }
+        .btn-delete {
+            background-color: #dc3545;
+        }
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+        #addLessonBtn {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+        #addLessonBtn:hover {
+            background-color: #45a049;
         }
 
-        .btn-primary {
-            background: var(--primary-color);
-            color: white;
-        }
-
-        .btn-secondary {
-            background: #6c757d;
-            color: white;
-        }
-
-        .btn-danger {
-            background: var(--danger-color);
-            color: white;
-        }
-
-        .btn-success {
-            background: var(--secondary-color);
-            color: white;
-        }
-
-        .add-lesson-section {
-            max-width: 800px;
-            margin: 2rem auto;
-            display: flex;
-            gap: 1rem;
-        }
-
-        .add-input {
-            flex: 1;
-            padding: 0.8rem;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                grid-template-columns: 1fr;
-            }
-            
-            .lesson-card {
-                width: 100%;
-            }
-            
-            .add-lesson-section {
+        /* ریسپانسیو */
+        @media (max-width: 600px) {
+            .lesson-item {
                 flex-direction: column;
+                align-items: flex-start;
             }
-        }
-
-        .fade-in {
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            .lesson-item > div {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                margin-top: 5px;
+            }
+            .edit-field {
+                width: 70%;
+            }
+            .btn {
+                width: 48%;
+                margin-left: 5px;
+            }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>📚 سیستم مدیریت دروس دانشگاهی</h1>
-    </header>
+    <h1>مدیریت دروس دانشگاهی</h1>
+    <div class="input-container">
+        <input type="text" id="newLessonInput" placeholder="نام درس جدید" />
+        <button id="addLessonBtn">افزودن درس جدید</button>
+    </div>
+    <ul class="lesson-list" id="lessonList">
+        <!-- دروس در اینجا اضافه می‌شوند -->
+    </ul>
 
-    <main>
-        <section class="search-container">
-            <input type="search" class="search-input" placeholder="جستجوی درس..." aria-label="جستجوی درس">
-        </section>
-
-        <section class="container" id="lessonsContainer">
-            <!-- دروس از طریق جاوااسکریپت اضافه خواهند شد -->
-        </section>
-
-        <section class="add-lesson-section">
-            <input type="text" class="add-input" id="newLessonInput" placeholder="نام درس جدید">
-            <button class="btn btn-success" id="addLessonBtn">
-                <i class="fas fa-plus"></i> افزودن درس جدید
-            </button>
-        </section>
-    </main>
-
-    <template id="lessonTemplate">
-        <div class="lesson-card">
-            <div class="lesson-content">
-                <span class="lesson-title"></span>
-                <i class="fas fa-book"></i>
-            </div>
-        </div>
-    </template>
-
-    <template id="detailsTemplate">
-        <div class="lesson-details fade-in">
-            <div class="editor-tools">
-                <button class="editor-btn" data-format="bold"><i class="fas fa-bold"></i></button>
-                <button class="editor-btn" data-format="italic"><i class="fas fa-italic"></i></button>
-                <input type="color" class="color-picker" aria-label="انتخاب رنگ متن">
-            </div>
-            
-            <h3 class="details-title"></h3>
-            
-            <ul class="chapter-list">
-                <!-- فصول از طریق جاوااسکریپت اضافه خواهند شد -->
-            </ul>
-            
-            <div class="btn-group">
-                <button class="btn btn-primary" data-action="save">ذخیره تغییرات</button>
-                <button class="btn btn-secondary" data-action="close">بستن</button>
-            </div>
-        </div>
-    </template>
-
-<script>
-    (() => {
+    <script>
         const lessons = [
             'خاک شناسی',
             'زراعت عمومی',
@@ -321,201 +152,67 @@
             'آزمایشگاه تجزیه'
         ];
 
-        const state = {
-            currentLesson: null,
-            chapters: new Map()
-        };
+        const lessonList = document.getElementById('lessonList');
+        const newLessonInput = document.getElementById('newLessonInput');
+        const addLessonBtn = document.getElementById('addLessonBtn');
 
-        // -------------------- DOM Elements --------------------
-        const $ = selector => document.querySelector(selector);
-        const $$ = selector => document.querySelectorAll(selector);
-        const lessonsContainer = $('#lessonsContainer');
-        const searchInput = $('.search-input');
-        const newLessonInput = $('#newLessonInput');
-        const addLessonBtn = $('#addLessonBtn');
-
-        // -------------------- Helper Functions --------------------
-        const createElement = (tag, attributes = {}) => {
-            const element = document.createElement(tag);
-            Object.entries(attributes).forEach(([key, value]) => {
-                element[key] = value;
-            });
-            return element;
-        };
-
-        const debounce = (fn, delay = 300) => {
-            let timeout;
-            return (...args) => {
-                clearTimeout(timeout);
-                timeout = setTimeout(() => fn.apply(this, args), delay);
-            };
-        };
-
-        // -------------------- Lesson Management --------------------
-        const renderLessons = (filter = '') => {
-            lessonsContainer.innerHTML = '';
-            const filtered = lessons.filter(lesson => 
-                lesson.toLowerCase().includes(filter.toLowerCase())
-            );
-
-            filtered.forEach((lesson, index) => {
-                const template = $('#lessonTemplate').content.cloneNode(true);
-                const card = template.querySelector('.lesson-card');
-                const title = template.querySelector('.lesson-title');
-                
-                card.dataset.lessonId = `lesson-${index + 1}`;
-                title.textContent = `درس ${index + 1}: ${lesson}`;
-                card.addEventListener('click', () => toggleLessonDetails(index + 1, lesson));
-                
-                lessonsContainer.appendChild(template);
+        const renderLessons = () => {
+            lessonList.innerHTML = '';
+            lessons.forEach((lesson, index) => {
+                const li = document.createElement('li');
+                li.className = 'lesson-item';
+                li.innerHTML = `
+                    <span>${lesson}</span>
+                    <div>
+                        <input type="text" class="edit-field" value="${lesson}" />
+                        <button class="btn btn-edit" data-index="${index}">ویرایش</button>
+                        <button class="btn btn-delete" data-index="${index}">حذف</button>
+                    </div>
+                `;
+                lessonList.appendChild(li);
             });
         };
 
-        const toggleLessonDetails = (id, title) => {
-            const existingDetails = $(`.lesson-details[data-lesson-id="${id}"]`);
-            if (existingDetails) {
-                existingDetails.remove();
-                state.currentLesson = null;
-                return;
-            }
-
-            closeAllDetails();
-            state.currentLesson = id;
-            renderLessonDetails(id, title);
-        };
-
-        const renderLessonDetails = (id, title) => {
-            const template = $('#detailsTemplate').content.cloneNode(true);
-            const details = template.querySelector('.lesson-details');
-            details.dataset.lessonId = id;
-            
-            const chaptersList = template.querySelector('.chapter-list');
-            const savedChapters = JSON.parse(localStorage.getItem(`lesson-${id}`)) || [];
-            
-            if (savedChapters.length > 0) {
-                savedChapters.forEach(chapter => addChapterItem(chaptersList, chapter));
-            } else {
-                // ایجاد فصول پیش‌فرض برای مثال
-                const defaultChapters = [
-                    'نگرشي بر رده‌هاي اصلي گياهان',
-                    'ياخته گياهي',
-                    'بافت‌هاي گياهي',
-                    'دستگاه رويشي (ریشه)',
-                    'دستگاه رويشي (ساقه)',
-                    'دستگاه رويشي (برگ)',
-                    'دستگاه زايشي (گل)',
-                    'دستگاه زايشي (میوه و دانه)'
-                ];
-                
-                defaultChapters.forEach((chapter, idx) => {
-                    addChapterItem(chaptersList, {
-                        id: idx + 1,
-                        title: `فصل ${idx + 1}: ${chapter}`,
-                        status: 'pending'
-                    });
-                });
-            }
-
-            template.querySelector('.details-title').textContent = title;
-            setupEditorControls(template);
-            lessonsContainer.appendChild(template);
-        };
-
-        const addChapterItem = (container, chapter) => {
-            const li = createElement('li', { className: 'chapter-item' });
-            
-            li.innerHTML = `
-                <span class="chapter-title">${chapter.title}</span>
-                <div class="status-group">
-                    <label class="status-label">
-                        <input type="radio" name="status-${chapter.id}" value="mastered" 
-                               ${chapter.status === 'mastered' ? 'checked' : ''}>
-                        تسلط
-                    </label>
-                    <label class="status-label">
-                        <input type="radio" name="status-${chapter.id}" value="pending"
-                               ${chapter.status === 'pending' ? 'checked' : ''}>
-                        در حال یادگیری
-                    </label>
-                </div>
-                <div class="btn-group">
-                    <button class="btn btn-primary" data-action="edit">ویرایش</button>
-                    <button class="btn btn-danger" data-action="delete">حذف</button>
-                </div>
-                <input type="text" class="edit-field" value="${chapter.title}">
-            `;
-
-            container.appendChild(li);
-        };
-
-        // -------------------- Event Handlers --------------------
-        const setupEditorControls = (template) => {
-            template.querySelectorAll('[data-format]').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    // پیاده‌سازی فرمت‌دهی متن
-                });
-            });
-
-            template.querySelector('[data-action="save"]').addEventListener('click', saveLesson);
-            template.querySelector('[data-action="close"]').addEventListener('click', closeAllDetails);
-        };
-
-        const saveLesson = (e) => {
-            const details = e.target.closest('.lesson-details');
-            const lessonId = details.dataset.lessonId;
-            const chapters = Array.from(details.querySelectorAll('.chapter-item')).map(item => ({
-                title: item.querySelector('.chapter-title').textContent,
-                status: item.querySelector('input[type="radio"]:checked').value
-            }));
-            
-            localStorage.setItem(lessonId, JSON.stringify(chapters));
-            closeAllDetails();
-        };
-
-        const closeAllDetails = () => {
-            $$('.lesson-details').forEach(details => details.remove());
-            state.currentLesson = null;
-        };
-
-        const handleSearch = debounce(() => {
-            renderLessons(searchInput.value);
-        });
-
-        const addNewLesson = () => {
+        const addLesson = () => {
             const title = newLessonInput.value.trim();
-            if (!title) return;
-            
-            lessons.push(title);
-            newLessonInput.value = '';
-            renderLessons();
-            localStorage.setItem('lessons', JSON.stringify(lessons));
+            if (title) {
+                lessons.push(title);
+                newLessonInput.value = '';
+                renderLessons();
+            } else {
+                alert('لطفاً نام درس را وارد کنید.');
+            }
         };
 
-        // -------------------- Event Listeners --------------------
-        searchInput.addEventListener('input', handleSearch);
-        addLessonBtn.addEventListener('click', addNewLesson);
-        lessonsContainer.addEventListener('click', (e) => {
-            if (e.target.matches('[data-action="edit"]')) {
-                const field = e.target.closest('.chapter-item').querySelector('.edit-field');
-                field.style.display = 'block';
-                field.focus();
+        const editLesson = (index) => {
+            const editField = document.querySelector(`.lesson-item:nth-child(${index + 1}) .edit-field`);
+            const newTitle = editField.value.trim();
+            if (newTitle) {
+                lessons[index] = newTitle;
+                renderLessons();
+            } else {
+                alert('لطفاً نام درس را وارد کنید.');
             }
-            
-            if (e.target.matches('[data-action="delete"]')) {
-                e.target.closest('.chapter-item').remove();
+        };
+
+        const deleteLesson = (index) => {
+            if (confirm('آیا از حذف این درس مطمئن هستید؟')) {
+                lessons.splice(index, 1);
+                renderLessons();
+            }
+        };
+
+        addLessonBtn.addEventListener('click', addLesson);
+        lessonList.addEventListener('click', (e) => {
+            const index = e.target.dataset.index;
+            if (e.target.classList.contains('btn-edit')) {
+                editLesson(index);
+            } else if (e.target.classList.contains('btn-delete')) {
+                deleteLesson(index);
             }
         });
 
-        // -------------------- Initialization --------------------
-        const init = () => {
-            const savedLessons = localStorage.getItem('lessons');
-            if (savedLessons) lessons.push(...JSON.parse(savedLessons));
-            renderLessons();
-        };
-
-        init();
-    })();
-</script>
-
+        renderLessons();
+    </script>
 </body>
 </html>
