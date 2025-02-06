@@ -4,101 +4,276 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>فهرست دروس</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: Vazir, Roboto, sans-serif;
+            background-color: #e0f7fa;
             margin: 0;
             padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #00796b;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+        .search-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .search-input {
+            padding: 10px;
+            width: 80%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
         .container {
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
+            justify-content: center;
         }
         .box {
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            border-radius: 10px;
             padding: 20px;
-            width: calc(33% - 40px);
+            width: calc(30% - 40px);
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: white;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid rgba(255,255,255,0.2);
+            background: linear-gradient(135deg, var(--color1), var(--color2));
+            animation: fadeIn 0.5s ease-out;
         }
+        .box:nth-child(1) { --color1: #FF6B6B; --color2: #FF8E53; }
+        .box:nth-child(2) { --color1: #FFD93D; --color2: #FF9F43; }
+        .box:nth-child(3) { --color1: #6BCB77; --color2: #4D96FF; }
+        .box:nth-child(4) { --color1: #4D96FF; --color2: #6BCB77; }
+        .box:nth-child(5) { --color1: #FF8E53; --color2: #FF6B6B; }
+        .box:nth-child(6) { --color1: #FF9F43; --color2: #FFD93D; }
+        .box:nth-child(7) { --color1: #4D96FF; --color2: #6BCB77; }
+        .box:nth-child(8) { --color1: #FF6B6B; --color2: #FF8E53; }
+        .box:nth-child(9) { --color1: #FFD93D; --color2: #FF9F43; }
+        .box:nth-child(10) { --color1: #6BCB77; --color2: #4D96FF; }
         .box:hover {
             transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         }
         .lesson-list {
             display: none;
-            background-color: #f9f9f9;
-            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
             border: 1px solid #ddd;
             border-radius: 5px;
             margin-top: 10px;
+            transition: max-height 0.3s ease;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
         .editable {
             border: 1px solid #007BFF;
             border-radius: 5px;
             padding: 5px;
             margin: 5px 0;
+            width: 100%;
+            box-sizing: border-box;
+            height: 100px; /* افزایش ارتفاع برای راحتی ویرایش */
+        }
+        .save-button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            display: block;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+        .save-button:hover {
+            background-color: #0056b3;
+        }
+        .icon {
+            margin-left: 10px;
+        }
+        .editor-toolbar {
+            margin-bottom: 10px;
+        }
+        .editor-toolbar button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+        .add-lesson-container {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        .add-lesson-input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .add-lesson-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .add-lesson-button:hover {
+            background-color: #45a049;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @media (max-width: 768px) {
+            .box {
+                width: 100%;
+                margin: 10px 0;
+            }
+            .search-input {
+                width: 95%;
+            }
         }
     </style>
 </head>
 <body>
 
 <h1>فهرست دروس</h1>
-<div class="container">
-    <div class="box" onclick="toggleLessons('lesson1')">درس 1: خاک شناسی</div>
-    <div class="box" onclick="toggleLessons('lesson2')">درس 2: زراعت عمومی</div>
-    <div class="box" onclick="toggleLessons('lesson3')">درس 3: ریخت شناسی</div>
-    <div class="box" onclick="toggleLessons('lesson4')">درس 4: سیستماتیک گیاهی</div>
-    <div class="box" onclick="toggleLessons('lesson5')">درس 5: برنامه نویسی رایانه</div>
-    <div class="box" onclick="toggleLessons('lesson6')">درس 6: تفسیر نهج البلاغه</div>
-    <div class="box" onclick="toggleLessons('lesson7')">درس 7: شیمی آلی</div>
-    <div class="box" onclick="toggleLessons('lesson8')">درس 8: شیمی تجزیه</div>
-    <div class="box" onclick="toggleLessons('lesson9')">درس 9: آزمایشگاه آلی</div>
-    <div class="box" onclick="toggleLessons('lesson10')">درس 10: آزمایشگاه تجزیه</div>
+<div class="search-container">
+    <input type="text" class="search-input" placeholder="جستجو دروس..." onkeyup="searchLessons()">
+</div>
+<div class="container" id="lessonContainer">
+    <div class="box" onclick="toggleLessons('lesson1')">درس 1: خاک شناسی <i class="fas fa-book icon"></i></div>
+    <div class="box" onclick="toggleLessons('lesson2')">درس 2: زراعت عمومی <i class="fas fa-book icon"></i></div>
+    <div class="box" onclick="toggleLessons('lesson3')">درس 3: ریخت شناسی <i class="fas fa-book icon"></i></div>
+    <div class="box" onclick="toggleLessons('lesson4')">درس 4: سیستماتیک گیاهی <i class="fas fa-book icon"></i></div>
+    <div class="box" onclick="toggleLessons('lesson5')">درس 5: برنامه نویسی رایانه <i class="fas fa-book icon"></i></div>
+    <div class="box" onclick="toggleLessons('lesson6')">درس 6: تفسیر نهج البلاغه <i class="fas fa-book icon"></i></div>
+    <div class="box" onclick="toggleLessons('lesson7')">درس 7: شیمی آلی <i class="fas fa-book icon"></i></div>
+    <div class="box" onclick="toggleLessons('lesson8')">درس 8: شیمی تجزیه <i class="fas fa-book icon"></i></div>
+    <div class="box" onclick="toggleLessons('lesson9')">درس 9: آزمایشگاه آلی <i class="fas fa-book icon"></i></div>
+    <div class="box" onclick="toggleLessons('lesson10')">درس 10: آزمایشگاه تجزیه <i class="fas fa-book icon"></i></div>
 </div>
 
 <div id="lesson1" class="lesson-list">
+    <div class="editor-toolbar">
+        <button onclick="formatText('bold')"><i class="fas fa-bold"></i></button>
+        <button onclick="formatText('italic')"><i class="fas fa-italic"></i></button>
+        <input type="color" onchange="changeTextColor(this.value)">
+    </div>
     <h3>فهرست درس خاک شناسی</h3>
     <textarea class="editable" rows="4">محتوای درس خاک شناسی...</textarea>
+    <button class="save-button" onclick="saveContent('lesson1')">ذخیره</button>
 </div>
 <div id="lesson2" class="lesson-list">
+    <div class="editor-toolbar">
+        <button onclick="formatText('bold')"><i class="fas fa-bold"></i></button>
+        <button onclick="formatText('italic')"><i class="fas fa-italic"></i></button>
+        <input type="color" onchange="changeTextColor(this.value)">
+    </div>
     <h3>فهرست درس زراعت عمومی</h3>
     <textarea class="editable" rows="4">محتوای درس زراعت عمومی...</textarea>
+    <button class="save-button" onclick="saveContent('lesson2')">ذخیره</button>
 </div>
 <div id="lesson3" class="lesson-list">
+    <div class="editor-toolbar">
+        <button onclick="formatText('bold')"><i class="fas fa-bold"></i></button>
+        <button onclick="formatText('italic')"><i class="fas fa-italic"></i></button>
+        <input type="color" onchange="changeTextColor(this.value)">
+    </div>
     <h3>فهرست درس ریخت شناسی</h3>
     <textarea class="editable" rows="4">محتوای درس ریخت شناسی...</textarea>
+    <button class="save-button" onclick="saveContent('lesson3')">ذخیره</button>
 </div>
 <div id="lesson4" class="lesson-list">
+    <div class="editor-toolbar">
+        <button onclick="formatText('bold')"><i class="fas fa-bold"></i></button>
+        <button onclick="formatText('italic')"><i class="fas fa-italic"></i></button>
+        <input type="color" onchange="changeTextColor(this.value)">
+    </div>
     <h3>فهرست درس سیستماتیک گیاهی</h3>
     <textarea class="editable" rows="4">محتوای درس سیستماتیک گیاهی...</textarea>
+    <button class="save-button" onclick="saveContent('lesson4')">ذخیره</button>
 </div>
 <div id="lesson5" class="lesson-list">
+    <div class="editor-toolbar">
+        <button onclick="formatText('bold')"><i class="fas fa-bold"></i></button>
+        <button onclick="formatText('italic')"><i class="fas fa-italic"></i></button>
+        <input type="color" onchange="changeTextColor(this.value)">
+    </div>
     <h3>فهرست درس برنامه نویسی رایانه</h3>
     <textarea class="editable" rows="4">محتوای درس برنامه نویسی رایانه...</textarea>
+    <button class="save-button" onclick="saveContent('lesson5')">ذخیره</button>
 </div>
 <div id="lesson6" class="lesson-list">
+    <div class="editor-toolbar">
+        <button onclick="formatText('bold')"><i class="fas fa-bold"></i></button>
+        <button onclick="formatText('italic')"><i class="fas fa-italic"></i></button>
+        <input type="color" onchange="changeTextColor(this.value)">
+    </div>
     <h3>فهرست درس تفسیر نهج البلاغه</h3>
     <textarea class="editable" rows="4">محتوای درس تفسیر نهج البلاغه...</textarea>
+    <button class="save-button" onclick="saveContent('lesson6')">ذخیره</button>
 </div>
 <div id="lesson7" class="lesson-list">
+    <div class="editor-toolbar">
+        <button onclick="formatText('bold')"><i class="fas fa-bold"></i></button>
+        <button onclick="formatText('italic')"><i class="fas fa-italic"></i></button>
+        <input type="color" onchange="changeTextColor(this.value)">
+    </div>
     <h3>فهرست درس شیمی آلی</h3>
     <textarea class="editable" rows="4">محتوای درس شیمی آلی...</textarea>
+    <button class="save-button" onclick="saveContent('lesson7')">ذخیره</button>
 </div>
 <div id="lesson8" class="lesson-list">
+    <div class="editor-toolbar">
+        <button onclick="formatText('bold')"><i class="fas fa-bold"></i></button>
+        <button onclick="formatText('italic')"><i class="fas fa-italic"></i></button>
+        <input type="color" onchange="changeTextColor(this.value)">
+    </div>
     <h3>فهرست درس شیمی تجزیه</h3>
     <textarea class="editable" rows="4">محتوای درس شیمی تجزیه...</textarea>
+    <button class="save-button" onclick="saveContent('lesson8')">ذخیره</button>
 </div>
 <div id="lesson9" class="lesson-list">
+    <div class="editor-toolbar">
+        <button onclick="formatText('bold')"><i class="fas fa-bold"></i></button>
+        <button onclick="formatText('italic')"><i class="fas fa-italic"></i></button>
+        <input type="color" onchange="changeTextColor(this.value)">
+    </div>
     <h3>فهرست درس آزمایشگاه آلی</h3>
     <textarea class="editable" rows="4">محتوای درس آزمایشگاه آلی...</textarea>
+    <button class="save-button" onclick="saveContent('lesson9')">ذخیره</button>
 </div>
 <div id="lesson10" class="lesson-list">
+    <div class="editor-toolbar">
+        <button onclick="formatText('bold')"><i class="fas fa-bold"></i></button>
+        <button onclick="formatText('italic')"><i class="fas fa-italic"></i></button>
+        <input type="color" onchange="changeTextColor(this.value)">
+    </div>
     <h3>فهرست درس آزمایشگاه تجزیه</h3>
     <textarea class="editable" rows="4">محتوای درس آزمایشگاه تجزیه...</textarea>
+    <button class="save-button" onclick="saveContent('lesson10')">ذخیره</button>
+</div>
+
+<!-- فرم اضافه کردن درس جدید -->
+<div class="add-lesson-container">
+    <input type="text" class="add-lesson-input" id="newLesson" placeholder="نام درس جدید">
+    <button class="add-lesson-button" onclick="addLesson()">اضافه کردن درس</button>
 </div>
 
 <script>
@@ -106,16 +281,101 @@
         const lessonList = document.getElementById(lessonId);
         const allLessons = document.querySelectorAll('.lesson-list');
         
-        // Hide all other lesson lists
         allLessons.forEach(lesson => {
-            if (lesson !== lessonList) {
-                lesson.style.display = 'none';
-            }
+            lesson.style.display = 'none';
         });
 
-        // Toggle the selected lesson list
         lessonList.style.display = lessonList.style.display === 'none' || lessonList.style.display === '' ? 'block' : 'none';
+        lessonList.parentNode.style.zIndex = '999';
+        document.querySelectorAll('.box').forEach(b => {
+            b.style.opacity = lessonList.style.display === 'block' ? '0.3' : '1';
+        });
     }
+
+    function saveContent(lessonId) {
+        const content = document.querySelector(`#${lessonId} .editable`).value;
+        localStorage.setItem(lessonId, content);
+        alert(`محتوای درس ${lessonId.replace('lesson', '')} ذخیره شد:\n${content}`);
+    }
+
+    function searchLessons() {
+        const input = document.querySelector('.search-input').value.toLowerCase();
+        const boxes = document.querySelectorAll('.box');
+
+        boxes.forEach(box => {
+            const text = box.textContent.toLowerCase();
+            box.style.display = text.includes(input) ? 'block' : 'none';
+        });
+    }
+
+    function formatText(style) {
+        const activeLesson = document.querySelector('.lesson-list[style*="block"]');
+        const textarea = activeLesson.querySelector('.editable');
+        const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
+        const beforeText = textarea.value.substring(0, textarea.selectionStart);
+        const afterText = textarea.value.substring(textarea.selectionEnd);
+        
+        let formattedText = selectedText;
+        if (style === 'bold') formattedText = `<b>${selectedText}</b>`;
+        if (style === 'italic') formattedText = `<i>${selectedText}</i>`;
+        
+        textarea.value = beforeText + formattedText + afterText;
+    }
+
+    function changeTextColor(color) {
+        const activeLesson = document.querySelector('.lesson-list[style*="block"]');
+        const textarea = activeLesson.querySelector('.editable');
+        const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
+        const beforeText = textarea.value.substring(0, textarea.selectionStart);
+        const afterText = textarea.value.substring(textarea.selectionEnd);
+        
+        const formattedText = `<span style="color: ${color}">${selectedText}</span>`;
+        textarea.value = beforeText + formattedText + afterText;
+    }
+
+    function addLesson() {
+        const lessonName = document.getElementById('newLesson').value.trim();
+        if (lessonName === "") {
+            alert("لطفاً نام درس را وارد کنید.");
+            return;
+        }
+
+        const lessonContainer = document.getElementById('lessonContainer');
+        const newLessonId = `lesson${lessonContainer.children.length + 1}`;
+        
+        // ایجاد باکس جدید
+        const newBox = document.createElement('div');
+        newBox.className = 'box';
+        newBox.onclick = () => toggleLessons(newLessonId);
+        newBox.innerHTML = `${lessonName} <i class="fas fa-book icon"></i>`;
+        lessonContainer.appendChild(newBox);
+
+        // ایجاد فهرست درس جدید
+        const newLessonList = document.createElement('div');
+        newLessonList.id = newLessonId;
+        newLessonList.className = 'lesson-list';
+        newLessonList.innerHTML = `
+            <div class="editor-toolbar">
+                <button onclick="formatText('bold')"><i class="fas fa-bold"></i></button>
+                <button onclick="formatText('italic')"><i class="fas fa-italic"></i></button>
+                <input type="color" onchange="changeTextColor(this.value)">
+            </div>
+            <h3>فهرست درس ${lessonName}</h3>
+            <textarea class="editable" rows="4">محتوای درس ${lessonName}...</textarea>
+            <button class="save-button" onclick="saveContent('${newLessonId}')">ذخیره</button>
+        `;
+        lessonContainer.appendChild(newLessonList);
+
+        // پاک کردن ورودی
+        document.getElementById('newLesson').value = '';
+    }
+
+    window.addEventListener('load', () => {
+        document.querySelectorAll('.lesson-list').forEach(lesson => {
+            const saved = localStorage.getItem(lesson.id);
+            if(saved) lesson.querySelector('.editable').value = saved;
+        });
+    });
 </script>
 
 </body>
